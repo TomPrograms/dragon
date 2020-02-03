@@ -1,4 +1,5 @@
 const tokenTypes = require("./tokenTypes.js");
+const Token = require("./token.js");
 
 const reservedWords = {
   and: tokenTypes.AND,
@@ -18,19 +19,6 @@ const reservedWords = {
   var: tokenTypes.VAR,
   while: tokenTypes.WHILE
 };
-
-class Token {
-  constructor(type, lexeme, literal, line) {
-    this.type = type;
-    this.lexeme = lexeme;
-    this.literal = literal;
-    this.line = line;
-  }
-
-  toString() {
-    return this.type + " " + this.lexeme + " " + this.literal;
-  }
-}
 
 class Scanner {
   constructor(code, Dragon) {
