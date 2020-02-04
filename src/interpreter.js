@@ -1,9 +1,11 @@
 const tokenTypes = require("./tokenTypes.js");
 const RuntimeError = require("./runtimeError.js");
+const Environment = require("./environment.js");
 
 module.exports = class Interpreter {
   constructor(Dragon) {
     this.Dragon = Dragon;
+    this.environment = new Environment();
   }
 
   visitLiteralExpr(expr) {
@@ -85,11 +87,11 @@ module.exports = class Interpreter {
           return Number(left) + Number(right);
         }
 
-        cons;
-
         if (typeof left === "string" && typeof right === "string") {
           return String(left) + String(right);
         }
+
+        // console.log(expr.left, expr.right)
 
         throw new RuntimeError(
           expr.operator,
@@ -113,7 +115,18 @@ module.exports = class Interpreter {
 
     return null;
   }
-  
+
+  visitAssignExpr(expr) {
+    let value = this.evaluate(expr.value);
+
+    this.environment.assignVar(expr.name, expr.value);
+    return value;
+  }
+
+  visitVariableExpr(expr) {
+    return this.environment.getVar(expr.name);
+  }
+
   visitExpressionStmt(stmt) {
     this.evaluate(stmt.expression);
     return null;
@@ -122,6 +135,16 @@ module.exports = class Interpreter {
   visitPrintStmt(stmt) {
     let value = this.evaluate(stmt.expression);
     console.log(this.stringify(value));
+    return null;
+  }
+
+  visitVarStmt(stmt) {
+    let value = null;
+    if (stmt.initializer !== undefined) {
+      value = this.evaluate(stmt.initializer);
+    }
+
+    this.environment.defineVar(stmt.name.lexeme, value);
     return null;
   }
 
@@ -137,7 +160,7 @@ module.exports = class Interpreter {
 
   interpret(statements) {
     try {
-      for (let i=0; i < statements.length; i++) {
+      for (let i = 0; i < statements.length; i++) {
         this.execute(statements[i]);
       }
     } catch (error) {

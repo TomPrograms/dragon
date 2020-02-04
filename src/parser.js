@@ -87,6 +87,10 @@ module.exports = class Parser {
       return new Expr.Literal(this.previous().literal);
     }
 
+    if (this.match(tokenTypes.IDENTIFIER)) {
+      return new Expr.Variable(this.previous());
+    }
+
     if (this.match(tokenTypes.LEFT_PAREN)) {
       let expr = this.expression();
       this.consume(tokenTypes.RIGHT_PAREN, "Expect ')' after expression.");
@@ -161,8 +165,26 @@ module.exports = class Parser {
     return expr;
   }
 
+  assignment() {
+    let expr = this.equality();
+
+    if (this.match(tokenTypes.EQUAL)) {
+      let equals = this.previous();
+      let value = this.assignment();
+
+      if (expr instanceof Expr.Variable) {
+        let name = expr.name;
+        return new Expr.Assign(name, value);
+      }
+
+      this.error(equals, "Invalid assignment target");
+    }
+
+    return expr;
+  }
+
   expression() {
-    return this.equality();
+    return this.assignment();
   }
 
   printStatement() {
@@ -171,24 +193,49 @@ module.exports = class Parser {
     return new Stmt.Print(value);
   }
 
-  expressionStatement() {                 
-    let expr = this.expression();                          
+  expressionStatement() {
+    let expr = this.expression();
     this.consume(tokenTypes.SEMICOLON, "Expected ';' after expression.");
-    return new Stmt.Expression(expr);                  
-  }   
+    return new Stmt.Expression(expr);
+  }
 
   statement() {
     if (this.match(tokenTypes.PRINT)) return this.printStatement();
-    
+
     return this.expressionStatement();
+  }
+
+  varDeclaration() {
+    let name = this.consume(tokenTypes.IDENTIFIER, "Expect variable name.");
+    let initializer = null;
+    if (this.match(tokenTypes.EQUAL)) {
+      initializer = this.expression();
+    }
+
+    this.consume(
+      tokenTypes.SEMICOLON,
+      "Expect ';' after variable declaration."
+    );
+    return new Stmt.Var(name, initializer);
+  }
+
+  declaration() {
+    try {
+      if (this.match(tokenTypes.VAR)) return this.varDeclaration();
+
+      return this.statement();
+    } catch (error) {
+      this.synchronize();
+      return null;
+    }
   }
 
   parse() {
     let statements = [];
     while (!this.isAtEnd()) {
-      statements.push(this.statement());
+      statements.push(this.declaration());
     }
-    
+
     return statements;
   }
 };

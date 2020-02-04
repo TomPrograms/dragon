@@ -3,7 +3,8 @@ const main = new Dragon();
 
 main.run(`
 
-print 2+1;
-print "hello";
+var a = 1;
+var b = 2;
+print a + b;
 
 `);
