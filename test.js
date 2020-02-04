@@ -1,4 +1,9 @@
 const Dragon = require("./src/dragon.js");
 const main = new Dragon();
 
-main.run("(11 + 1) * 11 / 233 == 223");
+main.run(`
+
+print 2+1;
+print "hello";
+
+`);
