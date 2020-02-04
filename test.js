@@ -1,4 +1,4 @@
 const Dragon = require("./src/dragon.js");
 const main = new Dragon();
 
-main.run("a = 11");
+main.run("11 + 11");
