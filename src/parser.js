@@ -199,8 +199,20 @@ module.exports = class Parser {
     return new Stmt.Expression(expr);
   }
 
+  block() {
+    let statements = [];
+
+    while (!this.check(tokenTypes.RIGHT_BRACE) && !this.isAtEnd()) {
+      statements.push(this.declaration());
+    }
+
+    this.consume(tokenTypes.RIGHT_BRACE, "Expected '}' after block.");
+    return statements;
+  }
+
   statement() {
     if (this.match(tokenTypes.PRINT)) return this.printStatement();
+    if (this.match(tokenTypes.LEFT_BRACE)) return new Stmt.Block(this.block());
 
     return this.expressionStatement();
   }

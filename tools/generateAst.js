@@ -58,6 +58,7 @@ defineAst("Expr", {
 
 defineAst("Stmt", {
   Expression: "Expr expression",
+  Block: "List statements",
   Print: "Expr expression",
   Var: "Token name, Expr initializer"
 });
