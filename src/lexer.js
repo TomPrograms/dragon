@@ -34,7 +34,7 @@ class Token {
   }
 }
 
-class Scanner {
+module.exports = class Lexer {
   constructor(code, Dragon) {
     this.Dragon = Dragon;
     this.code = code;
@@ -231,6 +231,4 @@ class Scanner {
     this.tokens.push(new Token(tokenTypes.EOF, "", null, this.line));
     return this.tokens;
   }
-}
-
-module.exports = Scanner;
+};
