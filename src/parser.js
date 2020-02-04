@@ -44,9 +44,9 @@ module.exports = class Parser {
   }
 
   check(type) {
-    if (this.isAtEnd()) return false;         
-    return this.peek().type === type;          
-  } 
+    if (this.isAtEnd()) return false;
+    return this.peek().type === type;
+  }
 
   peek() {
     return this.tokens[this.current];
@@ -66,14 +66,14 @@ module.exports = class Parser {
   }
 
   match(...args) {
-    for (let i=0; i < args.length; i++) {
+    for (let i = 0; i < args.length; i++) {
       let currentType = args[i];
       if (this.check(currentType)) {
         this.advance();
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -168,8 +168,8 @@ module.exports = class Parser {
     try {
       return this.expression();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return null;
     }
   }
-}
+};
