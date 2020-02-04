@@ -2,6 +2,8 @@ const tokenTypes = require("./tokenTypes.js");
 const RuntimeError = require("./runtimeError.js");
 const Environment = require("./environment.js");
 
+class BreakException extends Error {}
+
 module.exports = class Interpreter {
   constructor(Dragon) {
     this.Dragon = Dragon;
@@ -91,8 +93,6 @@ module.exports = class Interpreter {
           return String(left) + String(right);
         }
 
-        // console.log(expr.left, expr.right)
-
         throw new RuntimeError(
           expr.operator,
           "Operands must be two numbers or two strings."
@@ -132,6 +132,50 @@ module.exports = class Interpreter {
     return null;
   }
 
+  visitLogicalExpr(expr) {
+    let left = this.evaluate(expr.left);
+
+    // if OR token
+    if (expr.operator.type == tokenTypes.OR) {
+      // if one statement true, must return true value
+      if (this.isTruthy(left)) return left;
+    }
+
+    // if AND token
+    else {
+      // if one statement not true, must return false value
+      if (!this.isTruthy(left)) return left;
+    }
+
+    // if no shortcut, this statement must be equal truthy to overall expression value
+    return this.evaluate(expr.right);
+  }
+
+  visitIfStmt(stmt) {
+    if (this.isTruthy(this.evaluate(stmt.condition))) {
+      this.execute(stmt.thenBranch);
+    } else if (stmt.elseBranch !== null) {
+      this.execute(stmt.elseBranch);
+    }
+
+    return null;
+  }
+
+  visitWhileStmt(stmt) {
+    try {
+      while (this.isTruthy(this.evaluate(stmt.condition))) {
+        this.execute(stmt.body);
+      }
+    } catch (error) {
+      if (error instanceof BreakException) {
+      } else {
+        throw error;
+      }
+    }
+
+    return null;
+  }
+
   visitPrintStmt(stmt) {
     let value = this.evaluate(stmt.expression);
     console.log(this.stringify(value));
@@ -164,6 +208,10 @@ module.exports = class Interpreter {
 
     this.environment.defineVar(stmt.name.lexeme, value);
     return null;
+  }
+
+  visitBreakStmt(stmt) {
+    throw new BreakException();
   }
 
   stringify(object) {

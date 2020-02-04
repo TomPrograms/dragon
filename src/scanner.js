@@ -16,7 +16,9 @@ const reservedWords = {
   this: tokenTypes.THIS,
   true: tokenTypes.TRUE,
   var: tokenTypes.VAR,
-  while: tokenTypes.WHILE
+  while: tokenTypes.WHILE,
+  break: tokenTypes.BREAK,
+  continue: tokenTypes.CONTINUE
 };
 
 class Token {

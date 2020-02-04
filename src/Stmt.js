@@ -35,6 +35,41 @@ class Print extends Stmt {
   }
 }
 
+class While extends Stmt {
+  constructor(condition, body) {
+    super();
+    this.condition = condition;
+    this.body = body;
+  }
+
+  accept(visitor) {
+    return visitor.visitWhileStmt(this);
+  }
+}
+
+class If extends Stmt {
+  constructor(condition, thenBranch, elseBranch) {
+    super();
+    this.condition = condition;
+    this.thenBranch = thenBranch;
+    this.elseBranch = elseBranch;
+  }
+
+  accept(visitor) {
+    return visitor.visitIfStmt(this);
+  }
+}
+
+class Break extends Stmt {
+  constructor() {
+    super();
+  }
+
+  accept(visitor) {
+    return visitor.visitBreakStmt(this);
+  }
+}
+
 class Var extends Stmt {
   constructor(name, initializer) {
     super();
@@ -51,5 +86,8 @@ module.exports = {
   Expression,
   Block,
   Print,
+  While,
+  If,
+  Break,
   Var
 };

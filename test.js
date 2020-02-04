@@ -2,24 +2,16 @@ const Dragon = require("./src/dragon.js");
 const main = new Dragon();
 
 main.run(`
-var a = "global a";
-var b = "global b";
-var c = "global c";
-{
-  var a = "outer a";
-  var b = "outer b";
-  {
-    var a = "inner a";
-    print a;
-    print b;
-    print c;
-  }
+
+var a = 0;
+var b = 1;
+
+while (a < 10000) {
   print a;
-  print b;
-  print c;
+  var temp = a;
+  a = b;
+  b = temp + b;
 }
-print a;
-print b;
-print c;
+
 
 `);

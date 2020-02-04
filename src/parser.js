@@ -10,6 +10,7 @@ module.exports = class Parser {
     this.Dragon = Dragon;
 
     this.current = 0;
+    this.loopDepth = 0;
   }
 
   synchronize() {
@@ -165,8 +166,32 @@ module.exports = class Parser {
     return expr;
   }
 
-  assignment() {
+  and() {
     let expr = this.equality();
+
+    while (this.match(tokenTypes.AND)) {
+      let operator = this.previous();
+      let right = this.equality();
+      expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  }
+
+  or() {
+    let expr = this.and();
+
+    while (this.match(tokenTypes.OR)) {
+      let operator = this.previous();
+      let right = this.and();
+      expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  }
+
+  assignment() {
+    let expr = this.or();
 
     if (this.match(tokenTypes.EQUAL)) {
       let equals = this.previous();
@@ -210,7 +235,96 @@ module.exports = class Parser {
     return statements;
   }
 
+  ifStatement() {
+    this.consume(tokenTypes.LEFT_PAREN, "Expected '(' after 'if'.");
+    let condition = this.expression();
+    this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after if condition.");
+
+    let thenBranch = this.statement();
+    let elseBranch = null;
+    if (this.match(tokenTypes.ELSE)) {
+      elseBranch = this.statement();
+    }
+
+    return new Stmt.If(condition, thenBranch, elseBranch);
+  }
+
+  whileStatement() {
+    try {
+      this.loopDepth += 1;
+
+      this.consume(tokenTypes.LEFT_PAREN, "Expected '(' after 'while'.");
+      let condition = this.expression();
+      this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after condition.");
+      let body = this.statement();
+
+      return new Stmt.While(condition, body);
+    } finally {
+      this.loopDepth -= 1;
+    }
+  }
+
+  forStatement() {
+    try {
+      this.loopDepth += 1;
+
+      this.consume(tokenTypes.LEFT_PAREN, "Expected '(' after 'for'.");
+
+      let initializer;
+      if (this.match(tokenTypes.SEMICOLON)) {
+        initializer = null;
+      } else if (this.match(tokenTypes.VAR)) {
+        initializer = this.varDeclaration();
+      } else {
+        initializer = this.expressionStatement();
+      }
+
+      let condition = null;
+      if (!this.check(tokenTypes.SEMICOLON)) {
+        condition = this.expression();
+      }
+
+      let increment = null;
+      if (!this.check(tokenTypes.RIGHT_PAREN)) {
+        increment = this.expression();
+      }
+
+      this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after clauses");
+
+      let body = this.statement();
+
+      if (increment !== null) {
+        body = new Stmt.Block([body, new Stmt.Expression(increment)]);
+      }
+
+      if (condition == null) condition = new Expr.Literal(true);
+
+      body = new Stmt.While(condition, body);
+
+      if (initializer !== null) {
+        body = new Stmt.Block([initializer, body]);
+      }
+
+      return body;
+    } finally {
+      this.loopDepth -= 1;
+    }
+  }
+
+  breakStatement() {
+    if (this.loopDepth < 1) {
+      this.error(this.previous(), "'break' must be inside a loop.");
+    }
+
+    this.consume(tokenTypes.SEMICOLON, "Expected ';' after 'break'.");
+    return new Stmt.Break();
+  }
+
   statement() {
+    if (this.match(tokenTypes.BREAK)) return this.breakStatement();
+    if (this.match(tokenTypes.FOR)) return this.forStatement();
+    if (this.match(tokenTypes.WHILE)) return this.whileStatement();
+    if (this.match(tokenTypes.IF)) return this.ifStatement();
     if (this.match(tokenTypes.PRINT)) return this.printStatement();
     if (this.match(tokenTypes.LEFT_BRACE)) return new Stmt.Block(this.block());
 
