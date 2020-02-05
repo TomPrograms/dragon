@@ -1,6 +1,7 @@
 const tokenTypes = require("./tokenTypes.js");
 const Expr = require("./Expr.js");
 const Stmt = require("./Stmt.js");
+const Environment = require("./environment.js");
 
 class ParserError extends Error {}
 
@@ -80,6 +81,7 @@ module.exports = class Parser {
   }
 
   primary() {
+    if (this.match(tokenTypes.FUNCTION)) return this.function("function");
     if (this.match(tokenTypes.FALSE)) return new Expr.Literal(false);
     if (this.match(tokenTypes.TRUE)) return new Expr.Literal(true);
     if (this.match(tokenTypes.NIL)) return new Expr.Literal(null);
@@ -101,6 +103,39 @@ module.exports = class Parser {
     throw this.error(this.peek(), "Expect expression.");
   }
 
+  finishCall(callee) {
+    let args = [];
+    if (!this.check(tokenTypes.RIGHT_PAREN)) {
+      do {
+        if (args.length >= 255) {
+          error(this.peek(), "Cannot have more than 255 arguments.");
+        }
+        args.push(this.expression());
+      } while (this.match(tokenTypes.COMMA));
+    }
+
+    let paren = this.consume(
+      tokenTypes.RIGHT_PAREN,
+      "Expect ')' after arguments."
+    );
+
+    return new Expr.Call(callee, paren, args);
+  }
+
+  call() {
+    let expr = this.primary();
+
+    while (true) {
+      if (this.match(tokenTypes.LEFT_PAREN)) {
+        expr = this.finishCall(expr);
+      } else {
+        break;
+      }
+    }
+
+    return expr;
+  }
+
   unary() {
     if (this.match(tokenTypes.BANG, tokenTypes.MINUS)) {
       let operator = this.previous();
@@ -108,7 +143,7 @@ module.exports = class Parser {
       return new Expr.Unary(operator, right);
     }
 
-    return this.primary();
+    return this.call();
   }
 
   addition() {
@@ -348,7 +383,20 @@ module.exports = class Parser {
     return new Stmt.Break();
   }
 
+  returnStatement() {
+    let keyword = this.previous();
+    let value = null;
+
+    if (!this.check(tokenTypes.SEMICOLON)) {
+      value = this.expression();
+    }
+
+    this.consume(tokenTypes.SEMICOLON, "Expected ';' after return.");
+    return new Stmt.Return(keyword, value);
+  }
+
   statement() {
+    if (this.match(tokenTypes.RETURN)) return this.returnStatement();
     if (this.match(tokenTypes.BREAK)) return this.breakStatement();
     if (this.match(tokenTypes.FOR)) return this.forStatement();
     if (this.match(tokenTypes.WHILE)) return this.whileStatement();
@@ -373,12 +421,39 @@ module.exports = class Parser {
     return new Stmt.Var(name, initializer);
   }
 
+  function(kind) {
+    let name = this.consume(tokenTypes.IDENTIFIER, `Expected ${kind} name.`);
+    this.consume(tokenTypes.LEFT_PAREN, `Expected '(' after ${kind} name.`);
+
+    let parameters = [];
+    if (!this.check(tokenTypes.RIGHT_PAREN)) {
+      do {
+        if (parameters.length >= 255) {
+          this.error(this.peek(), "Cannot have more than 255 parameters.");
+        }
+
+        parameters.push(
+          this.consume(tokenTypes.IDENTIFIER, "Expect parameter name.")
+        );
+      } while (this.match(tokenTypes.COMMA));
+    }
+
+    this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after parameters.");
+    this.consume(tokenTypes.LEFT_BRACE, `Expected '{' before ${kind} body.`);
+
+    let body = this.block();
+
+    return new Stmt.Function(name, parameters, body);
+  }
+
   declaration() {
     try {
+      if (this.match(tokenTypes.FUNCTION)) return this.function("function");
       if (this.match(tokenTypes.VAR)) return this.varDeclaration();
 
       return this.statement();
     } catch (error) {
+      console.log(error);
       this.synchronize();
       return null;
     }

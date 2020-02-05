@@ -54,6 +54,7 @@ const defineAst = function(baseName, types) {
 defineAst("Expr", {
   Assign: "name, value",
   Binary: "left, operator, right",
+  Call: "callee, paren, args",
   Grouping: "expression",
   Literal: "value",
   Logical: "left, operator, right",
@@ -63,6 +64,8 @@ defineAst("Expr", {
 
 defineAst("Stmt", {
   Expression: "expression",
+  Function: "name, params, body",
+  Return: "keyword, value",
   Block: "statements",
   Print: "expression",
   While: "condition, body",
