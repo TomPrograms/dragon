@@ -2,11 +2,20 @@ const Lexer = require("./lexer.js");
 const Parser = require("./parser.js");
 const Interpreter = require("./interpreter.js");
 const tokenTypes = require("./tokenTypes.js");
+const fs = require("fs");
 
 class Dragon {
   constructor() {
     this.hadError = false;
     this.hadRuntimeError = false;
+  }
+
+  runfile(filename) {
+    const fileData = fs.readFileSync(filename).toString();
+    this.run(fileData);
+
+    if (this.hadError) process.exit(65);
+    if (this.hadRuntimeError) process.exit(70);
   }
 
   run(code) {
@@ -36,7 +45,7 @@ class Dragon {
   }
 
   throw(line, error) {
-    throw new Error(line + " " + error);
+    throw new Error(`Line ${ line }. ${error}`);
   }
 
   runtimeError(error) {
