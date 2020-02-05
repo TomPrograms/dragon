@@ -3,8 +3,6 @@ const main = new Dragon();
 
 main.run(`
 
-for (var i = 2; i < 100; i = i**2) {
-  print(i);
-}
+print(10 % 3);
 
 `);

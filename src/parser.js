@@ -126,7 +126,7 @@ module.exports = class Parser {
   multiplication() {
     let expr = this.unary();
 
-    while (this.match(tokenTypes.SLASH, tokenTypes.STAR)) {
+    while (this.match(tokenTypes.SLASH, tokenTypes.STAR, tokenTypes.MODULUS)) {
       let operator = this.previous();
       let right = this.unary();
       expr = new Expr.Binary(expr, operator, right);
@@ -225,13 +225,19 @@ module.exports = class Parser {
   }
 
   printStatement() {
-    this.consume(tokenTypes.LEFT_PAREN, "Expected '(' before print statement value.");
-    
+    this.consume(
+      tokenTypes.LEFT_PAREN,
+      "Expected '(' before print statement value."
+    );
+
     let value = this.expression();
-    
-    this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after print statement value.");
+
+    this.consume(
+      tokenTypes.RIGHT_PAREN,
+      "Expected ')' after print statement value."
+    );
     this.consume(tokenTypes.SEMICOLON, "Expected ';' after value.");
-    
+
     return new Stmt.Print(value);
   }
 
@@ -300,8 +306,11 @@ module.exports = class Parser {
       if (!this.check(tokenTypes.SEMICOLON)) {
         condition = this.expression();
       }
-      
-      this.consume(tokenTypes.SEMICOLON, "Expected ';' after condition statement");
+
+      this.consume(
+        tokenTypes.SEMICOLON,
+        "Expected ';' after condition statement"
+      );
 
       let increment = null;
       if (!this.check(tokenTypes.RIGHT_PAREN)) {
