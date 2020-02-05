@@ -213,8 +213,13 @@ module.exports = class Parser {
   }
 
   printStatement() {
+    this.consume(tokenTypes.LEFT_PAREN, "Expected '(' before print statement value.");
+    
     let value = this.expression();
+    
+    this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after print statement value.");
     this.consume(tokenTypes.SEMICOLON, "Expected ';' after value.");
+    
     return new Stmt.Print(value);
   }
 
@@ -283,6 +288,8 @@ module.exports = class Parser {
       if (!this.check(tokenTypes.SEMICOLON)) {
         condition = this.expression();
       }
+      
+      this.consume(tokenTypes.SEMICOLON, "Expected ';' after condition statement");
 
       let increment = null;
       if (!this.check(tokenTypes.RIGHT_PAREN)) {

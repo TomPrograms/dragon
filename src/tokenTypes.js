@@ -38,6 +38,5 @@ module.exports = {
   VAR: "VAR",
   WHILE: "WHILE",
   BREAK: "BREAK",
-  CONTINUE: "CONTINUE",
   EOF: "EOF"
 };
