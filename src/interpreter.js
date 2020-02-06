@@ -29,8 +29,9 @@ class StandardFn extends Callable {
 }
 
 class DragonFunction extends Callable {
-  constructor(declaration, closure) {
+  constructor(name, declaration, closure) {
     super();
+    this.name = name;
     this.declaration = declaration;
     this.closure = closure;
   }
@@ -40,7 +41,8 @@ class DragonFunction extends Callable {
   }
 
   toString() {
-    return `<function ${this.declaration.name.lexeme}>`;
+    if (this.name === null) return "<fn>";
+    return `<function ${this.name}>`;
   }
 
   call(interpreter, args) {
@@ -317,8 +319,16 @@ module.exports = class Interpreter {
     throw new Return(value);
   }
 
+  visitFunctionExpr(expr) {
+    return new DragonFunction(null, expr, this.environment);
+  }
+
   visitFunctionStmt(stmt) {
-    let func = new DragonFunction(stmt, this.environment);
+    let func = new DragonFunction(
+      stmt.name.lexeme,
+      stmt.func,
+      this.environment
+    );
     this.environment.defineVar(stmt.name.lexeme, func);
   }
 

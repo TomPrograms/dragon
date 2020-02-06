@@ -51,6 +51,11 @@ module.exports = class Parser {
     return this.peek().type === type;
   }
 
+  checkNext(type) {
+    if (this.isAtEnd()) return false;
+    return this.tokens[this.current + 1].type === type;
+  }
+
   peek() {
     return this.tokens[this.current];
   }
@@ -81,7 +86,7 @@ module.exports = class Parser {
   }
 
   primary() {
-    if (this.match(tokenTypes.FUNCTION)) return this.function("function");
+    if (this.match(tokenTypes.FUNCTION)) return this.functionBody("function");
     if (this.match(tokenTypes.FALSE)) return new Expr.Literal(false);
     if (this.match(tokenTypes.TRUE)) return new Expr.Literal(true);
     if (this.match(tokenTypes.NIL)) return new Expr.Literal(null);
@@ -423,6 +428,10 @@ module.exports = class Parser {
 
   function(kind) {
     let name = this.consume(tokenTypes.IDENTIFIER, `Expected ${kind} name.`);
+    return new Stmt.Function(name, this.functionBody(kind));
+  }
+
+  functionBody(kind) {
     this.consume(tokenTypes.LEFT_PAREN, `Expected '(' after ${kind} name.`);
 
     let parameters = [];
@@ -443,12 +452,18 @@ module.exports = class Parser {
 
     let body = this.block();
 
-    return new Stmt.Function(name, parameters, body);
+    return new Expr.Function(parameters, body);
   }
 
   declaration() {
     try {
-      if (this.match(tokenTypes.FUNCTION)) return this.function("function");
+      if (
+        this.check(tokenTypes.FUNCTION) &&
+        this.checkNext(tokenTypes.IDENTIFIER)
+      ) {
+        this.consume(tokenTypes.FUNCTION, null);
+        return this.function("function");
+      }
       if (this.match(tokenTypes.VAR)) return this.varDeclaration();
 
       return this.statement();
