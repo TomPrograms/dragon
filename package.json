@@ -1,0 +1,19 @@
+{
+  "name": "dragon-lang",
+  "version": "1.0.0",
+  "description": "High-level, interpreted programming language inspired by Lox and Javascript.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": "TomPrograms/dragon",
+  "bin": {
+    "dragon": "./bin/dragon"
+  },
+  "keywords": [
+    "dragon",
+    "dragon-lang",
+    "programming-lang"
+  ],
+  "author": "Tom",
+  "license": "MIT",
+  "homepage": "https://github.com/tomprograms/dragon#readme"
+}
