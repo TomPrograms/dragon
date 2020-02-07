@@ -1,15 +1,10 @@
-// fibonacci.drg
-// print first one hundred numbers in the fibonacci sequence
-
-function fibonacci(iterations) {
-  var a = 0;
-  var b = 1;
-  for (var i = 0; i < iterations; i = i + 1) {
-    var temp = a + b;
-    a = b;
-    b = temp;
-    print(temp);
+var a = "global";
+{
+  function showA() {
+    print(a);
   }
-}
 
-fibonacci(100);
+  showA();
+  var a = "block";
+  showA();
+}
