@@ -37,6 +37,18 @@ class Return extends Stmt {
   }
 }
 
+class Class extends Stmt {
+  constructor(name, methods) {
+    super();
+    this.name = name;
+    this.methods = methods;
+  }
+
+  accept(visitor) {
+    return visitor.visitClassStmt(this);
+  }
+}
+
 class Block extends Stmt {
   constructor(statements) {
     super();
@@ -110,6 +122,7 @@ module.exports = {
   Expression,
   Function,
   Return,
+  Class,
   Block,
   Print,
   While,

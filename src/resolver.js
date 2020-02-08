@@ -31,7 +31,14 @@ class Stack {
 
 const FunctionType = {
   NONE: "NONE",
-  FUNCTION: "FUNCTION"
+  FUNCTION: "FUNCTION",
+  INITIALIZER: "INITIALIZER",
+  METHOD: "METHOD"
+};
+
+const ClassType = {
+  NONE: "NONE",
+  CLASS: "CLASS"
 };
 
 module.exports = class Resolver {
@@ -41,6 +48,7 @@ module.exports = class Resolver {
     this.scopes = new Stack();
 
     this.currentFunction = FunctionType.NONE;
+    this.currentClass = ClassType.NONE;
   }
 
   define(name) {
@@ -150,6 +158,38 @@ module.exports = class Resolver {
     return null;
   }
 
+  visitClassStmt(stmt) {
+    let enclosingClass = this.currentClass;
+    this.currentClass = ClassType.CLASS;
+
+    this.declare(stmt.name);
+    this.define(stmt.name);
+
+    this.beginScope();
+    this.scopes.peek()["this"] = true;
+
+    let methods = stmt.methods;
+    for (let i = 0; i < methods.length; i++) {
+      let declaration = FunctionType.METHOD;
+
+      if (methods[i].name.lexeme === "init") {
+        declaration = FunctionType.INITIALIZER;
+      }
+
+      this.resolveFunction(methods[i].func, declaration);
+    }
+
+    this.endScope();
+
+    this.currentClass = enclosingClass;
+    return null;
+  }
+
+  visitGetExpr(expr) {
+    this.resolve(expr.object);
+    return null;
+  }
+
   visitExpressionStmt(stmt) {
     this.resolve(stmt.expression);
     return null;
@@ -170,7 +210,10 @@ module.exports = class Resolver {
     if (this.currentFunction === FunctionType.NONE) {
       this.dragon.error(stmt.keyword, "Cannot return from top-level code.");
     }
-    if (stmt.value != null) {
+    if (stmt.value !== null) {
+      if (this.currentFunction === FunctionType.INITIALIZER) {
+        this.dragon.error(stmt.keyword, "Cannot return a value from an initializer.");
+      }
       this.resolve(stmt.value);
     }
     return null;
@@ -216,6 +259,20 @@ module.exports = class Resolver {
 
   visitUnaryExpr(expr) {
     this.resolve(expr.right);
+    return null;
+  }
+
+  visitSetExpr(expr) {
+    this.resolve(expr.value);
+    this.resolve(expr.object);
+    return null;
+  }
+
+  visitThisExpr(expr) {
+    if (this.currentClass == ClassType.NONE) {
+      this.dragon.error(expr.keyword, "Cannot use 'this' outside of class.");
+    }
+    this.resolveLocal(expr, expr.keyword);
     return null;
   }
 };

@@ -56,9 +56,12 @@ defineAst("Expr", {
   Binary: "left, operator, right",
   Function: "params, body",
   Call: "callee, paren, args",
+  Get: "object, name",
   Grouping: "expression",
   Literal: "value",
   Logical: "left, operator, right",
+  Set: "object, name, value",
+  This: "keyword",
   Unary: "operator, right",
   Variable: "name"
 });
@@ -67,6 +70,7 @@ defineAst("Stmt", {
   Expression: "expression",
   Function: "name, func",
   Return: "keyword, value",
+  Class: "name, methods",
   Block: "statements",
   Print: "expression",
   While: "condition, body",

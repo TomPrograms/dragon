@@ -29,11 +29,12 @@ class StandardFn extends Callable {
 }
 
 class DragonFunction extends Callable {
-  constructor(name, declaration, closure) {
+  constructor(name, declaration, closure, isInitializer = false) {
     super();
     this.name = name;
     this.declaration = declaration;
     this.closure = closure;
+    this.isInitializer = isInitializer;
   }
 
   arity() {
@@ -55,9 +56,87 @@ class DragonFunction extends Callable {
       interpreter.executeBlock(this.declaration.body, environment);
     } catch (error) {
       if (error instanceof Return) {
+        if (this.isInitializer) return this.closure.getVarAt(0, "this");
+
         return error.value;
       }
     }
+
+    if (this.isInitializer) return this.closure.getVarAt(0, "this");
+    return null;
+  }
+
+  bind(instance) {
+    let environment = new Environment(this.closure);
+    environment.defineVar("this", instance);
+    return new DragonFunction(
+      this.name,
+      this.declaration,
+      environment,
+      this.isInitializer
+    );
+  }
+}
+
+class DragonInstance {
+  constructor(creatorClass) {
+    this.creatorClass = creatorClass;
+    this.fields = {};
+  }
+
+  get(name) {
+    if (this.fields.hasOwnProperty(name.lexeme)) {
+      return this.fields[name.lexeme];
+    }
+
+    let method = this.creatorClass.findMethod(name.lexeme);
+    if (method) return method.bind(this);
+
+    throw new RuntimeError("Undefined property '" + name.lexeme + "'.");
+  }
+
+  set(name, value) {
+    this.fields[name.lexeme] = value;
+  }
+
+  toString() {
+    return "<" + this.creatorClass.name + " instance>";
+  }
+}
+
+class DragonClass extends Callable {
+  constructor(name, methods) {
+    super();
+    this.name = name;
+    this.methods = methods;
+  }
+
+  findMethod(name) {
+    if (this.methods.hasOwnProperty(name)) {
+      return this.methods[name];
+    }
+
+    return undefined;
+  }
+
+  toString() {
+    return this.name;
+  }
+
+  arity() {
+    let initializer = this.findMethod("init");
+    return initializer ? initializer.arity() : 0;
+  }
+
+  call(interpreter, args) {
+    let instance = new DragonInstance(this);
+
+    let initializer = this.findMethod("init");
+    if (initializer) {
+      initializer.bind(instance).call(interpreter, args);
+    }
+
+    return instance;
   }
 }
 
@@ -340,16 +419,68 @@ module.exports = class Interpreter {
   }
 
   visitFunctionExpr(expr) {
-    return new DragonFunction(null, expr, this.environment);
+    return new DragonFunction(null, expr, this.environment, false);
+  }
+
+  visitSetExpr(expr) {
+    let obj = this.evaluate(expr.object);
+
+    if (!(obj instanceof DragonInstance)) {
+      throw new RuntimeError(expr.name + " Only instances have fields.");
+    }
+
+    let value = this.evaluate(expr.value);
+    obj.set(expr.name, value);
+    return value;
   }
 
   visitFunctionStmt(stmt) {
     let func = new DragonFunction(
       stmt.name.lexeme,
       stmt.func,
-      this.environment
+      this.environment,
+      false
     );
     this.environment.defineVar(stmt.name.lexeme, func);
+  }
+
+  visitClassStmt(stmt) {
+    this.environment.defineVar(stmt.name.lexeme, null);
+
+    let methods = {};
+    let definedMethods = stmt.methods;
+    for (let i = 0; i < stmt.methods.length; i++) {
+      let currentMethod = definedMethods[i];
+      let isInitializer = currentMethod.name.lexeme === "init";
+      let func = new DragonFunction(
+        currentMethod.name.lexeme,
+        currentMethod.func,
+        this.environment,
+        isInitializer
+      );
+      methods[currentMethod.name.lexeme] = func;
+    }
+
+    let created = new DragonClass(stmt.name.lexeme, methods);
+
+    this.environment.assignVar(stmt.name, created);
+    return null;
+  }
+
+  visitGetExpr(expr) {
+    let object = this.evaluate(expr.object);
+    if (object instanceof DragonInstance) {
+      return object.get(expr.name);
+    }
+
+    throw new Error(
+      expr.name,
+      "You can only access the properies of instances."
+    );
+  }
+
+  visitThisExpr(expr) {
+    return this.lookupVar(expr.keyword, expr);
   }
 
   stringify(object) {
