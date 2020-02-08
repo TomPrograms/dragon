@@ -451,34 +451,44 @@ module.exports = class Interpreter {
   }
 
   visitSubscriptExpr(expr) {
-    let list = this.evaluate(expr.callee);
-    if (!Array.isArray(list))
-      throw new Error("Only arrays can be subscripted.");
+    let obj = this.evaluate(expr.callee);
+    if (!Array.isArray(obj) && obj.constructor !== Object)
+      throw new Error("Only arrays and dictionaries can be subscripted.");
 
     let index = this.evaluate(expr.index);
-    if (!Number.isInteger(index)) {
-      throw new RuntimeError(
-        expr.closeBracket,
-        "Only numbers can be used to index an array."
-      );
-    }
+    if (Array.isArray(obj)) {
+      if (!Number.isInteger(index)) {
+        throw new RuntimeError(
+          expr.closeBracket,
+          "Only numbers can be used to index an array."
+        );
+      }
 
-    if (index >= list.length) {
-      throw new RuntimeError(expr.closeBracket, "Array index out of range.");
+      if (index >= obj.length) {
+        throw new RuntimeError(expr.closeBracket, "Array index out of range.");
+      }
+      return obj[index];
+    } else if (obj.constructor == Object) {
+      return obj[index];
     }
-    return list[index];
   }
 
   visitSetExpr(expr) {
     let obj = this.evaluate(expr.object);
 
-    if (!(obj instanceof DragonInstance)) {
-      throw new RuntimeError(expr.name + " Only instances have fields.");
+    if (!(obj instanceof DragonInstance) && !obj.constructor == Object) {
+      throw new RuntimeError(
+        expr.name.lexeme + " - Only instances and dictionaries have fields."
+      );
     }
 
     let value = this.evaluate(expr.value);
-    obj.set(expr.name, value);
-    return value;
+    if (obj instanceof DragonInstance) {
+      obj.set(expr.name, value);
+      return value;
+    } else if (obj.constructor == Object) {
+      obj[expr.name] = value;
+    }
   }
 
   visitFunctionStmt(stmt) {
@@ -535,16 +545,26 @@ module.exports = class Interpreter {
     let object = this.evaluate(expr.object);
     if (object instanceof DragonInstance) {
       return object.get(expr.name);
+    } else if (object.constructor == Object) {
+      return object[expr.name];
     }
 
     throw new Error(
-      expr.name,
-      "You can only access the properies of instances."
+      expr.name.lexeme +
+        " - You can only access the properies of instances and dictionaries."
     );
   }
 
   visitThisExpr(expr) {
     return this.lookupVar(expr.keyword, expr);
+  }
+
+  visitDictionaryExpr(expr) {
+    let dict = {};
+    for (let i = 0; i < expr.keys.length; i++) {
+      dict[this.evaluate(expr.keys[i])] = this.evaluate(expr.values[i]);
+    }
+    return dict;
   }
 
   visitArrayExpr(expr) {
@@ -572,6 +592,7 @@ module.exports = class Interpreter {
 
   stringify(object) {
     if (object === null) return "nil";
+    if (Array.isArray(object)) return object;
 
     return object.toString();
   }

@@ -112,6 +112,32 @@ module.exports = class Parser {
       }
       return new Expr.Array(values);
     }
+    if (this.match(tokenTypes.LEFT_BRACE)) {
+      let keys = [];
+      let values = [];
+      if (this.match(tokenTypes.RIGHT_BRACE)) {
+        return new Expr.Dictionary([], []);
+      }
+      while (!this.match(tokenTypes.RIGHT_BRACE)) {
+        let key = this.assignment();
+        this.consume(
+          tokenTypes.COLON,
+          "Expected a colon between key and value."
+        );
+        let value = this.assignment();
+
+        keys.push(key);
+        values.push(value);
+
+        if (this.peek().type !== tokenTypes.RIGHT_BRACE) {
+          this.consume(
+            tokenTypes.COMMA,
+            "Expected a comma before the next expression."
+          );
+        }
+      }
+      return new Expr.Dictionary(keys, values);
+    }
     if (this.match(tokenTypes.FUNCTION)) return this.functionBody("function");
     if (this.match(tokenTypes.FALSE)) return new Expr.Literal(false);
     if (this.match(tokenTypes.TRUE)) return new Expr.Literal(true);
