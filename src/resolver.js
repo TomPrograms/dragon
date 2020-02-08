@@ -38,7 +38,8 @@ const FunctionType = {
 
 const ClassType = {
   NONE: "NONE",
-  CLASS: "CLASS"
+  CLASS: "CLASS",
+  SUBCLASS: "SUBCLASS"
 };
 
 module.exports = class Resolver {
@@ -165,6 +166,23 @@ module.exports = class Resolver {
     this.declare(stmt.name);
     this.define(stmt.name);
 
+    if (
+      stmt.superclass !== null &&
+      stmt.name.lexeme === stmt.superclass.name.lexeme
+    ) {
+      this.dragon.error("A class cannot inherit from itself.");
+    }
+
+    if (stmt.superclass !== null) {
+      this.currentClass = ClassType.SUBCLASS;
+      this.resolve(stmt.superclass);
+    }
+
+    if (stmt.superclass !== null) {
+      this.beginScope();
+      this.scopes.peek()["super"] = true;
+    }
+
     this.beginScope();
     this.scopes.peek()["this"] = true;
 
@@ -181,7 +199,23 @@ module.exports = class Resolver {
 
     this.endScope();
 
+    if (stmt.superclass !== null) this.endScope();
+
     this.currentClass = enclosingClass;
+    return null;
+  }
+
+  visitSuperExpr(expr) {
+    if (this.currentClass === ClassType.NONE) {
+      this.dragon.error(expr.keyword, "Cannot use 'super' outside of a class.");
+    } else if (this.currentClass !== ClassType.SUBCLASS) {
+      this.dragon.error(
+        expr.keyword,
+        "Cannot use 'super' in a class with no superclass."
+      );
+    }
+
+    this.resolveLocal(expr, expr.keyword);
     return null;
   }
 
@@ -212,7 +246,10 @@ module.exports = class Resolver {
     }
     if (stmt.value !== null) {
       if (this.currentFunction === FunctionType.INITIALIZER) {
-        this.dragon.error(stmt.keyword, "Cannot return a value from an initializer.");
+        this.dragon.error(
+          stmt.keyword,
+          "Cannot return a value from an initializer."
+        );
       }
       this.resolve(stmt.value);
     }

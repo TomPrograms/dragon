@@ -38,19 +38,19 @@ run(100);
 You can install Dragon through the NPM:
 
 ```
-> npm i -g dragon-lang
+$ npm i -g dragon-lang
 ```
 
 Executing a file using Dragon:
 
 ```
-> dragon test.drg
+$ dragon test.drg
 ```
 
 Using the Dragon shell:
 
 ```
-> dragon
+$ dragon
 ```
 -->
 

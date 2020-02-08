@@ -38,9 +38,10 @@ class Return extends Stmt {
 }
 
 class Class extends Stmt {
-  constructor(name, methods) {
+  constructor(name, superclass, methods) {
     super();
     this.name = name;
+    this.superclass = superclass;
     this.methods = methods;
   }
 

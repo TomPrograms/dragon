@@ -105,15 +105,20 @@ class DragonInstance {
 }
 
 class DragonClass extends Callable {
-  constructor(name, methods) {
+  constructor(name, superclass, methods) {
     super();
     this.name = name;
+    this.superclass = superclass;
     this.methods = methods;
   }
 
   findMethod(name) {
     if (this.methods.hasOwnProperty(name)) {
       return this.methods[name];
+    }
+
+    if (this.superclass !== null) {
+      return this.superclass.findMethod(name);
     }
 
     return undefined;
@@ -445,7 +450,20 @@ module.exports = class Interpreter {
   }
 
   visitClassStmt(stmt) {
+    let superclass = null;
+    if (stmt.superclass !== null) {
+      superclass = this.evaluate(stmt.superclass);
+      if (!(superclass instanceof DragonClass)) {
+        throw new Error(stmt.superclass.name, "Superclass must be a class.");
+      }
+    }
+
     this.environment.defineVar(stmt.name.lexeme, null);
+
+    if (stmt.superclass !== null) {
+      this.environment = new Environment(this.environment);
+      this.environment.defineVar("super", superclass);
+    }
 
     let methods = {};
     let definedMethods = stmt.methods;
@@ -461,7 +479,11 @@ module.exports = class Interpreter {
       methods[currentMethod.name.lexeme] = func;
     }
 
-    let created = new DragonClass(stmt.name.lexeme, methods);
+    let created = new DragonClass(stmt.name.lexeme, superclass, methods);
+
+    if (superclass !== null) {
+      this.environment = this.environment.enclosing;
+    }
 
     this.environment.assignVar(stmt.name, created);
     return null;
@@ -481,6 +503,21 @@ module.exports = class Interpreter {
 
   visitThisExpr(expr) {
     return this.lookupVar(expr.keyword, expr);
+  }
+
+  visitSuperExpr(expr) {
+    let distance = this.locals.get(expr);
+    let superclass = this.environment.getVarAt(distance, "super");
+
+    let object = this.environment.getVarAt(distance - 1, "this");
+
+    let method = superclass.findMethod(expr.method.lexeme);
+
+    if (method === null) {
+      throw new RuntimeError("Undefined property '" + expr.name.lexeme + "'.");
+    }
+
+    return method.bind(object);
   }
 
   stringify(object) {
