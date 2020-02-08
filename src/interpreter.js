@@ -57,8 +57,9 @@ class DragonFunction extends Callable {
     } catch (error) {
       if (error instanceof Return) {
         if (this.isInitializer) return this.closure.getVarAt(0, "this");
-
         return error.value;
+      } else {
+        throw error;
       }
     }
 
@@ -92,7 +93,7 @@ class DragonInstance {
     let method = this.creatorClass.findMethod(name.lexeme);
     if (method) return method.bind(this);
 
-    throw new RuntimeError("Undefined property '" + name.lexeme + "'.");
+    throw new RuntimeError(name, "Couldn't get undefined property.");
   }
 
   set(name, value) {
@@ -453,7 +454,7 @@ module.exports = class Interpreter {
   visitSubscriptExpr(expr) {
     let obj = this.evaluate(expr.callee);
     if (!Array.isArray(obj) && obj.constructor !== Object)
-      throw new Error("Only arrays and dictionaries can be subscripted.");
+      throw new RuntimeError(expr.callee.name, "Only arrays and dictionaries can be subscripted.");
 
     let index = this.evaluate(expr.index);
     if (Array.isArray(obj)) {
@@ -476,9 +477,9 @@ module.exports = class Interpreter {
   visitSetExpr(expr) {
     let obj = this.evaluate(expr.object);
 
-    if (!(obj instanceof DragonInstance) && !obj.constructor == Object) {
+    if (!(obj instanceof DragonInstance) && obj.constructor !== Object) {
       throw new RuntimeError(
-        expr.name.lexeme + " - Only instances and dictionaries have fields."
+        expr.object.name, "Only instances and dictionaries can have fields set."
       );
     }
 
@@ -506,7 +507,7 @@ module.exports = class Interpreter {
     if (stmt.superclass !== null) {
       superclass = this.evaluate(stmt.superclass);
       if (!(superclass instanceof DragonClass)) {
-        throw new Error(stmt.superclass.name, "Superclass must be a class.");
+        throw new RuntimeError(stmt.superclass.name, "Superclass must be a class.");
       }
     }
 
@@ -549,9 +550,9 @@ module.exports = class Interpreter {
       return object[expr.name];
     }
 
-    throw new Error(
-      expr.name.lexeme +
-        " - You can only access the properies of instances and dictionaries."
+    throw new RuntimeError(
+      expr.name,
+      "You can only access the properies of instances and dictionaries."
     );
   }
 
@@ -583,8 +584,8 @@ module.exports = class Interpreter {
 
     let method = superclass.findMethod(expr.method.lexeme);
 
-    if (method === null) {
-      throw new RuntimeError("Undefined property '" + expr.name.lexeme + "'.");
+    if (method === undefined) {
+      throw new RuntimeError(expr, "Undefined property called by super.");
     }
 
     return method.bind(object);
