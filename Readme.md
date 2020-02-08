@@ -1,6 +1,6 @@
 ![Dragon Lang Logo](./docs/logo.png)
 
-An object orientated, dynamically typed, interpreted language.
+Dragon is an object orientated, dynamically typed, interpreted language.
 
 [![Dragon Lang License Badge](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
