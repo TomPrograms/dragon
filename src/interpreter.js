@@ -427,6 +427,21 @@ module.exports = class Interpreter {
     return new DragonFunction(null, expr, this.environment, false);
   }
 
+  visitSubscriptExpr(expr) {
+    let list = this.evaluate(expr.callee);
+    if (!Array.isArray(list)) throw new Error("Only arrays can be subscripted.");
+    
+    let index = this.evaluate(expr.index);
+    if (!Number.isInteger(index)) {
+      throw new RuntimeError(expr.closeBracket, "Only numbers can be used to index an array.");
+    }
+
+    if (index >= list.length) {
+      throw new RuntimeError(expr.closeBracket, "Array index out of range.");
+    }
+    return list[index];
+  }
+
   visitSetExpr(expr) {
     let obj = this.evaluate(expr.object);
 
@@ -503,6 +518,14 @@ module.exports = class Interpreter {
 
   visitThisExpr(expr) {
     return this.lookupVar(expr.keyword, expr);
+  }
+
+  visitArrayExpr(expr) {
+    let values = [];
+    for (let i=0; i < expr.values.length; i++) {
+      values.push(this.evaluate(expr.values[i]));
+    }
+    return values;
   }
 
   visitSuperExpr(expr) {
