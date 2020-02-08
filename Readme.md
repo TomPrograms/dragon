@@ -32,6 +32,7 @@ function run(times) {
 run(100);
 ```
 
+<!--
 ## Installation and Usage
 
 You can install Dragon through the NPM:
@@ -51,6 +52,7 @@ Using the Dragon shell:
 ```
 > dragon
 ```
+-->
 
 ## Credit
 
