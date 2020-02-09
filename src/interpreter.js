@@ -2,6 +2,7 @@ const tokenTypes = require("./tokenTypes.js");
 const RuntimeError = require("./runtimeError.js");
 const Environment = require("./environment.js");
 
+class ContinueException extends Error {}
 class BreakException extends Error {}
 class Return extends Error {
   constructor(value) {
@@ -53,10 +54,10 @@ class DragonFunction extends Callable {
     for (let i = 0; i < params.length; i++) {
       let param = params[i];
 
-      let name = param['name'].lexeme;
+      let name = param["name"].lexeme;
       let value = args[i];
       if (args[i] === null) {
-        value = param['default'] ? param['default'].value : null;
+        value = param["default"] ? param["default"].value : null;
       }
       environment.defineVar(name, value);
     }
@@ -424,15 +425,48 @@ module.exports = class Interpreter {
     return null;
   }
 
-  visitWhileStmt(stmt) {
-    try {
-      while (this.isTruthy(this.evaluate(stmt.condition))) {
-        this.execute(stmt.body);
+  visitForStmt(stmt) {
+    if (stmt.initializer !== null) {
+      this.evaluate(stmt.initializer);
+    }
+    while (true) {
+      if (stmt.condition !== null) {
+        if (!this.isTruthy(this.evaluate(stmt.condition))) {
+          break;
+        }
       }
-    } catch (error) {
-      if (error instanceof BreakException) {
-      } else {
-        throw error;
+
+      try {
+        this.execute(stmt.body);
+      } catch (error) {
+        if (error instanceof BreakException) {
+          break;
+        } else if (error instanceof ContinueException) {
+          // do nothing and continue the loop
+        } else {
+          throw error;
+        }
+      }
+
+      if (stmt.increment !== null) {
+        this.evaluate(stmt.increment);
+      }
+    }
+    return null;
+  }
+
+  visitWhileStmt(stmt) {
+    while (this.isTruthy(this.evaluate(stmt.condition))) {
+      try {
+        this.execute(stmt.body);
+      } catch (error) {
+        if (error instanceof BreakException) {
+          break;
+        } else if (error instanceof ContinueException) {
+          // do nothing and continue the loop
+        } else {
+          throw error;
+        }
       }
     }
 
@@ -471,6 +505,10 @@ module.exports = class Interpreter {
 
     this.environment.defineVar(stmt.name.lexeme, value);
     return null;
+  }
+
+  visitContinueStmt(stmt) {
+    throw new ContinueException();
   }
 
   visitBreakStmt(stmt) {

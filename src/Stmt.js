@@ -84,6 +84,20 @@ class While extends Stmt {
   }
 }
 
+class For extends Stmt {
+  constructor(initializer, condition, increment, body) {
+    super();
+    this.initializer = initializer;
+    this.condition = condition;
+    this.increment = increment;
+    this.body = body;
+  }
+
+  accept(visitor) {
+    return visitor.visitForStmt(this);
+  }
+}
+
 class If extends Stmt {
   constructor(condition, thenBranch, elseBranch) {
     super();
@@ -107,6 +121,16 @@ class Break extends Stmt {
   }
 }
 
+class Continue extends Stmt {
+  constructor() {
+    super();
+  }
+
+  accept(visitor) {
+    return visitor.visitContinueStmt(this);
+  }
+}
+
 class Var extends Stmt {
   constructor(name, initializer) {
     super();
@@ -127,7 +151,9 @@ module.exports = {
   Block,
   Print,
   While,
+  For,
   If,
   Break,
+  Continue,
   Var
 };

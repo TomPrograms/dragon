@@ -79,7 +79,9 @@ defineAst("Stmt", {
   Block: "statements",
   Print: "expression",
   While: "condition, body",
+  For: "initializer, condition, increment, body",
   If: "condition, thenBranch, elseBranch",
   Break: undefined,
+  Continue: undefined,
   Var: "name, initializer"
 });

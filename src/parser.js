@@ -431,19 +431,7 @@ module.exports = class Parser {
 
       let body = this.statement();
 
-      if (increment !== null) {
-        body = new Stmt.Block([body, new Stmt.Expression(increment)]);
-      }
-
-      if (condition == null) condition = new Expr.Literal(true);
-
-      body = new Stmt.While(condition, body);
-
-      if (initializer !== null) {
-        body = new Stmt.Block([initializer, body]);
-      }
-
-      return body;
+      return new Stmt.For(initializer, condition, increment, body);
     } finally {
       this.loopDepth -= 1;
     }
@@ -456,6 +444,15 @@ module.exports = class Parser {
 
     this.consume(tokenTypes.SEMICOLON, "Expected ';' after 'break'.");
     return new Stmt.Break();
+  }
+
+  continueStatement() {
+    if (this.loopDepth < 1) {
+      this.error(this.previous(), "'continue' must be inside a loop.");
+    }
+
+    this.consume(tokenTypes.SEMICOLON, "Expected ';' after 'continue'.");
+    return new Stmt.Continue();
   }
 
   returnStatement() {
@@ -472,6 +469,7 @@ module.exports = class Parser {
 
   statement() {
     if (this.match(tokenTypes.RETURN)) return this.returnStatement();
+    if (this.match(tokenTypes.CONTINUE)) return this.continueStatement();
     if (this.match(tokenTypes.BREAK)) return this.breakStatement();
     if (this.match(tokenTypes.FOR)) return this.forStatement();
     if (this.match(tokenTypes.WHILE)) return this.whileStatement();
@@ -513,10 +511,13 @@ module.exports = class Parser {
 
         let paramObj = {};
 
-        paramObj['name'] = this.consume(tokenTypes.IDENTIFIER, "Expect parameter name.");
+        paramObj["name"] = this.consume(
+          tokenTypes.IDENTIFIER,
+          "Expect parameter name."
+        );
 
         if (this.match(tokenTypes.EQUAL)) {
-          paramObj['default'] = this.primary();
+          paramObj["default"] = this.primary();
         }
 
         parameters.push(paramObj);
