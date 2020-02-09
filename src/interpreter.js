@@ -24,7 +24,8 @@ class StandardFn extends Callable {
   }
 
   call(interpreter, args, token) {
-    return this.func.apply(null, [...args, token]);
+    this.token = token;
+    return this.func.apply(this, args);
   }
 }
 
@@ -155,31 +156,31 @@ module.exports = class Interpreter {
 
     this.globals.defineVar(
       "clock",
-      new StandardFn(0, () => {
+      new StandardFn(0, function() {
         return Date.now() / 1000;
       })
     );
 
     this.globals.defineVar(
       "len",
-      new StandardFn(1, obj => {
+      new StandardFn(1, function(obj) {
         return obj.length;
       })
     );
 
     this.globals.defineVar(
       "str",
-      new StandardFn(1, value => {
+      new StandardFn(1, function(value) {
         return `${value}`;
       })
     );
 
     this.globals.defineVar(
       "float",
-      new StandardFn(1, (value, token) => {
+      new StandardFn(1, function(value) {
         if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value))
           throw new RuntimeError(
-            token,
+            this.token,
             "Only numbers can be parsed to floats."
           );
         return parseFloat(value);
@@ -188,10 +189,10 @@ module.exports = class Interpreter {
 
     this.globals.defineVar(
       "int",
-      new StandardFn(1, (value, token) => {
+      new StandardFn(1, function(value) {
         if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value))
           throw new RuntimeError(
-            token,
+            this.token,
             "Only numbers can be parsed to integers."
           );
         return parseInt(value);
