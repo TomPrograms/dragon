@@ -4,7 +4,7 @@ Dragon is an object orientated, dynamically typed, interpreted language.
 
 [![Dragon Lang License Badge](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-```dragon
+```js
 // fibonacci.drg
 // print first one hundred numbers in the fibonacci sequence
 

@@ -454,7 +454,10 @@ module.exports = class Interpreter {
   visitSubscriptExpr(expr) {
     let obj = this.evaluate(expr.callee);
     if (!Array.isArray(obj) && obj.constructor !== Object)
-      throw new RuntimeError(expr.callee.name, "Only arrays and dictionaries can be subscripted.");
+      throw new RuntimeError(
+        expr.callee.name,
+        "Only arrays and dictionaries can be subscripted."
+      );
 
     let index = this.evaluate(expr.index);
     if (Array.isArray(obj)) {
@@ -479,7 +482,8 @@ module.exports = class Interpreter {
 
     if (!(obj instanceof DragonInstance) && obj.constructor !== Object) {
       throw new RuntimeError(
-        expr.object.name, "Only instances and dictionaries can have fields set."
+        expr.object.name,
+        "Only instances and dictionaries can have fields set."
       );
     }
 
@@ -507,7 +511,10 @@ module.exports = class Interpreter {
     if (stmt.superclass !== null) {
       superclass = this.evaluate(stmt.superclass);
       if (!(superclass instanceof DragonClass)) {
-        throw new RuntimeError(stmt.superclass.name, "Superclass must be a class.");
+        throw new RuntimeError(
+          stmt.superclass.name,
+          "Superclass must be a class."
+        );
       }
     }
 
