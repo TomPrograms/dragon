@@ -190,11 +190,20 @@ module.exports = class Interpreter {
     this.globals.defineVar(
       "int",
       new StandardFn(1, function(value) {
-        if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value))
+        if (value === undefined || value === null) {
           throw new RuntimeError(
             this.token,
             "Only numbers can be parsed to integers."
           );
+        }
+
+        if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value)) {
+          throw new RuntimeError(
+            this.token,
+            "Only numbers can be parsed to integers."
+          );
+        }
+
         return parseInt(value);
       })
     );
