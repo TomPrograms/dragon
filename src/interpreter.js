@@ -351,10 +351,33 @@ module.exports = class Interpreter {
       );
     }
 
+    let params;
+    if (callee instanceof DragonFunction) {
+      params = callee.declaration.params;
+    } else if (callee instanceof DragonClass) {
+      params = callee.methods.init ? callee.methods.init.declaration.params : [];
+    } else {
+      params = [];
+    }
+
+    // if not enough params provided, default to null
     if (args.length < callee.arity()) {
       let diff = callee.arity() - args.length;
       for (let i = 0; i < diff; i++) {
         args.push(null);
+      }
+    }
+
+    // if too many params, ignore them or assign them to wildcard
+    else if (args.length >= callee.arity()) {
+      // if wildcard then assign rest of arguments to wildcard
+      if (
+        params.length > 0 &&
+        params[params.length - 1]["type"] === "wildcard"
+      ) {
+        let newArgs = args.slice(0, params.length - 1);
+        newArgs.push(args.slice(params.length - 1, args.length));
+        args = newArgs;
       }
     }
 

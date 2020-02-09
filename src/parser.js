@@ -511,6 +511,13 @@ module.exports = class Parser {
 
         let paramObj = {};
 
+        if (this.peek().type === tokenTypes.STAR) {
+          this.consume(tokenTypes.STAR, null);
+          paramObj["type"] = "wildcard";
+        } else {
+          paramObj["type"] = "standard";
+        }
+
         paramObj["name"] = this.consume(
           tokenTypes.IDENTIFIER,
           "Expect parameter name."
@@ -521,6 +528,9 @@ module.exports = class Parser {
         }
 
         parameters.push(paramObj);
+
+        // wildcards should be the last parameter
+        if (paramObj["type"] === "wildcard") break;
       } while (this.match(tokenTypes.COMMA));
     }
 
