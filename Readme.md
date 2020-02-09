@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="Dragon Lang Logo" src="./docs/logo.png"></img>
 
-  <p>Dragon is an object orientated, dynamically typed, interpreted language. Dragon is a quick and easy-to-use scripting language, that employs dynamic but strong typing and object oriented program to make programming as beautiful as possible.</p>
+  <p>Dragon is an object orientated, dynamically typed, interpreted language. Dragon is a quick and easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible.</p>
 
   <a href="./LICENSE">
     <img alt="Dragon Lang License Badge" src="https://img.shields.io/badge/license-MIT-blue"></img>
@@ -44,7 +44,7 @@ run(100);
 - 🔧 Object-oriented programming - full object system with classes, methods, states and inheritance.
 - ⚙️ Simple data structures included - strings, numbers, lists and dictionaries.
 - 🧠 Great control flow - if and else, while and for statements all included.
-- 🤖 Turing Complete - All features needed to build a complete turing machine.
+- 🤖 Turing Complete - all features needed to build a complete turing machine.
 
 <!--
 ## Installation and Usage
