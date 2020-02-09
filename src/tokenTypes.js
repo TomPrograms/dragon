@@ -33,7 +33,7 @@ module.exports = {
   FUNCTION: "FUNCTION",
   FOR: "FOR",
   IF: "IF",
-  NIL: "NIL",
+  NULL: "NULL",
   OR: "OR",
   PRINT: "PRINT",
   RETURN: "RETURN",

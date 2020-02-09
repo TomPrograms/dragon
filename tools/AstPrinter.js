@@ -12,7 +12,7 @@ module.exports = class AstPrinter {
   }
 
   visitLiteralExpr(expr) {
-    if (expr === null) return "nil";
+    if (expr === null) return "null";
     return expr.value.toString();
   }
 

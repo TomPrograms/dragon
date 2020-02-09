@@ -8,7 +8,7 @@ const reservedWords = {
   for: tokenTypes.FOR,
   function: tokenTypes.FUNCTION,
   if: tokenTypes.IF,
-  nil: tokenTypes.NIL,
+  null: tokenTypes.NULL,
   or: tokenTypes.OR,
   print: tokenTypes.PRINT,
   return: tokenTypes.RETURN,
