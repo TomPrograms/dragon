@@ -1,12 +1,14 @@
 <div align="center">
   <img alt="Dragon Lang Logo" src="./docs/logo.png"></img>
 
-  <p>Dragon is an object orientated, dynamically typed, interpreted language. Dragon is a quick and easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible.</p>
+  <p>Dragon is an object orientated, interpreted language. Dragon is a quick and easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible.</p>
 
   <a href="./LICENSE">
     <img alt="Dragon Lang License Badge" src="https://img.shields.io/badge/license-MIT-blue"></img>
   </a>
 </div>
+
+<br>
 
 ```js
 // fibonacci.drg
