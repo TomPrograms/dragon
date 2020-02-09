@@ -529,7 +529,7 @@ module.exports = class Parser {
     let name = this.consume(tokenTypes.IDENTIFIER, "Expected class name.");
 
     let superclass = null;
-    if (this.match(tokenTypes.LESS)) {
+    if (this.match(tokenTypes.EXTENDS)) {
       this.consume(tokenTypes.IDENTIFIER, "Expect superclass name.");
       superclass = new Expr.Variable(this.previous());
     }
