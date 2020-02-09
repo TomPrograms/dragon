@@ -511,9 +511,15 @@ module.exports = class Parser {
           this.error(this.peek(), "Cannot have more than 255 parameters.");
         }
 
-        parameters.push(
-          this.consume(tokenTypes.IDENTIFIER, "Expect parameter name.")
-        );
+        let paramObj = {};
+
+        paramObj['name'] = this.consume(tokenTypes.IDENTIFIER, "Expect parameter name.");
+
+        if (this.match(tokenTypes.EQUAL)) {
+          paramObj['default'] = this.primary();
+        }
+
+        parameters.push(paramObj);
       } while (this.match(tokenTypes.COMMA));
     }
 
