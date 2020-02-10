@@ -467,7 +467,90 @@ module.exports = class Parser {
     return new Stmt.Return(keyword, value);
   }
 
+  switchStatement() {
+    try {
+      this.loopDepth += 1;
+
+      this.consume(
+        tokenTypes.LEFT_PAREN,
+        "Expected left brace after switch statement."
+      );
+      let condition = this.expression();
+      this.consume(
+        tokenTypes.RIGHT_PAREN,
+        "Expected right brace after switch condition."
+      );
+      this.consume(
+        tokenTypes.LEFT_BRACE,
+        "Expected left brace before start of switch body."
+      );
+
+      let branches = [];
+      let defaultBranch = null;
+      while (!this.match(tokenTypes.RIGHT_BRACE) && !this.isAtEnd()) {
+        if (this.match(tokenTypes.CASE)) {
+          let branchConditions = [this.expression()];
+          this.consume(
+            tokenTypes.COLON,
+            "Expected colon after case statement."
+          );
+
+          while (this.check(tokenTypes.CASE)) {
+            this.consume(tokenTypes.CASE, null);
+            branchConditions.push(this.expression());
+            this.consume(
+              tokenTypes.COLON,
+              "Expected colon after case statement."
+            );
+          }
+
+          let stmts = [];
+          do {
+            stmts.push(this.statement());
+          } while (
+            !this.check(tokenTypes.CASE) &&
+            !this.check(tokenTypes.DEFAULT) &&
+            !this.check(tokenTypes.RIGHT_BRACE)
+          );
+
+          branches.push({
+            conditions: branchConditions,
+            stmts
+          });
+        } else if (this.match(tokenTypes.DEFAULT)) {
+          if (defaultBranch !== null)
+            throw new ParserError(
+              "You can only have one default statement per switch statement."
+            );
+
+          this.consume(
+            tokenTypes.COLON,
+            "Expected colon after default statement."
+          );
+
+          let stmts = [];
+          do {
+            stmts.push(this.statement());
+          } while (
+            !this.check(tokenTypes.CASE) &&
+            !this.check(tokenTypes.DEFAULT) &&
+            !this.check(tokenTypes.RIGHT_BRACE)
+          );
+
+          defaultBranch = {
+            stmts
+          };
+        }
+      }
+
+      return new Stmt.Switch(condition, branches, defaultBranch);
+    } finally {
+      this.loopDepth -= 1;
+    }
+  }
+
   statement() {
+    if (this.match(tokenTypes.SWITCH)) return this.switchStatement();
     if (this.match(tokenTypes.RETURN)) return this.returnStatement();
     if (this.match(tokenTypes.CONTINUE)) return this.continueStatement();
     if (this.match(tokenTypes.BREAK)) return this.breakStatement();

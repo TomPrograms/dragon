@@ -111,6 +111,19 @@ class If extends Stmt {
   }
 }
 
+class Switch extends Stmt {
+  constructor(condition, branches, defaultBranch) {
+    super();
+    this.condition = condition;
+    this.branches = branches;
+    this.defaultBranch = defaultBranch;
+  }
+
+  accept(visitor) {
+    return visitor.visitSwitchStmt(this);
+  }
+}
+
 class Break extends Stmt {
   constructor() {
     super();
@@ -153,6 +166,7 @@ module.exports = {
   While,
   For,
   If,
+  Switch,
   Break,
   Continue,
   Var

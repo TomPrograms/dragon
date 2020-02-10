@@ -41,11 +41,11 @@ run(100);
 ## Features
 
 - ✨ Easy-to-use typing system - dynamically but strongly typed for ease of use.
-- 🔥 Eloquent syntax - reduce code length with objects, functions and returns.
+- 🔥 Eloquent syntax - reduce code length by creating functions, objects and loops.
 - ⚡️ Interpreted language - streamline development with no compile times.
-- 🔧 Object-oriented programming - full object system with classes, methods, states and inheritance.
-- ⚙️ Simple data structures included - strings, numbers, lists and dictionaries.
-- 🧠 Great control flow - if and else, while and for statements all included.
+- 🚀 Object-oriented programming - full object system with classes, methods, states and inheritance.
+- ⚙ Simple data structures included - strings, numbers, lists and dictionaries.
+- 🧠 Great control flow - if and else, for and while, switch and case all included.
 - 🤖 Turing Complete - all features needed to build a complete turing machine.
 
 <!--

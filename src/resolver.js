@@ -45,6 +45,7 @@ const ClassType = {
 const LoopType = {
   NONE: "NONE",
   WHILE: "WHILE",
+  SWITCH: "SWITCH",
   FOR: "FOR"
 };
 
@@ -260,6 +261,22 @@ module.exports = class Resolver {
       this.resolve(stmt.value);
     }
     return null;
+  }
+
+  visitSwitchStmt(stmt) {
+    let enclosingType = this.currentLoop;
+    this.currentLoop = LoopType.SWITCH;
+
+    let branches = stmt.branches;
+    let defaultBranch = stmt.defaultBranch;
+
+    for (let i = 0; i < branches.length; i++) {
+      this.resolve(branches[i]["stmts"]);
+    }
+
+    if (defaultBranch !== null) this.resolve(defaultBranch["stmts"]);
+
+    this.currentLoop = enclosingType;
   }
 
   visitWhileStmt(stmt) {

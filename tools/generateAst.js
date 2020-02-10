@@ -81,6 +81,7 @@ defineAst("Stmt", {
   While: "condition, body",
   For: "initializer, condition, increment, body",
   If: "condition, thenBranch, elseBranch",
+  Switch: "condition, branches, defaultBranch",
   Break: undefined,
   Continue: undefined,
   Var: "name, initializer"

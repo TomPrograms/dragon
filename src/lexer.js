@@ -19,6 +19,9 @@ const reservedWords = {
   while: tokenTypes.WHILE,
   break: tokenTypes.BREAK,
   continue: tokenTypes.CONTINUE,
+  switch: tokenTypes.SWITCH,
+  case: tokenTypes.CASE,
+  default: tokenTypes.DEFAULT,
   extends: tokenTypes.EXTENDS
 };
 
@@ -193,7 +196,9 @@ module.exports = class Lexer {
         this.addToken(tokenTypes.STAR);
         break;
       case "!":
-        this.addToken(this.match("=") ? tokenTypes.BANG_EQUAL : tokenTypes.BANG);
+        this.addToken(
+          this.match("=") ? tokenTypes.BANG_EQUAL : tokenTypes.BANG
+        );
         break;
       case "=":
         this.addToken(

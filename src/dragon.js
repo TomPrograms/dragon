@@ -76,7 +76,7 @@ module.exports = class Dragon {
   }
 
   runtimeError(error) {
-    let line = error.token.line || error.token.keyword.line;
+    let line = error.token.line;
     if (error.token && line) {
       console.error(`Error: [Line: ${error.token.line}] ${error.message}`);
     } else {
