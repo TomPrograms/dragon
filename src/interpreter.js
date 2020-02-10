@@ -355,7 +355,9 @@ module.exports = class Interpreter {
     if (callee instanceof DragonFunction) {
       params = callee.declaration.params;
     } else if (callee instanceof DragonClass) {
-      params = callee.methods.init ? callee.methods.init.declaration.params : [];
+      params = callee.methods.init
+        ? callee.methods.init.declaration.params
+        : [];
     } else {
       params = [];
     }
