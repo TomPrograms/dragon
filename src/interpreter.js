@@ -5,6 +5,7 @@ const Dragon = require("./dragon.js");
 const loadGlobalLib = require("./lib/globalLib.js");
 const path = require("path");
 const fs = require("fs");
+const checkStdLib = require("./lib/importStdlib.js");
 
 const Callable = require("./structures/callable.js");
 const StandardFn = require("./structures/standardFn.js");
@@ -363,11 +364,16 @@ module.exports = class Interpreter {
     let totalFolder = path.dirname(totalPath);
     let fileName = path.basename(totalPath);
 
-    if (!fs.existsSync(totalPath)) {
-      throw new RuntimeError(stmt, "Couldn't find imported file.");
-    }
+    let data = checkStdLib(relativePath);
 
-    const data = fs.readFileSync(totalPath).toString();
+    // if path wasn't in stdlib, load that file
+    if (data === null) {
+      if (!fs.existsSync(totalPath)) {
+        throw new RuntimeError(stmt, "Couldn't find imported file.");
+      }
+
+      data = fs.readFileSync(totalPath).toString();
+    }
 
     const dragon = new Dragon.Dragon();
     const interpreter = new Interpreter(dragon, totalFolder, fileName);
