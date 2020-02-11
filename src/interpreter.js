@@ -365,15 +365,13 @@ module.exports = class Interpreter {
     let fileName = path.basename(totalPath);
 
     let data = checkStdLib(relativePath);
+    if (data !== null) return data;
 
-    // if path wasn't in stdlib, load that file
-    if (data === null) {
-      if (!fs.existsSync(totalPath)) {
-        throw new RuntimeError(stmt, "Couldn't find imported file.");
-      }
-
-      data = fs.readFileSync(totalPath).toString();
+    if (!fs.existsSync(totalPath)) {
+      throw new RuntimeError(stmt, "Couldn't find imported file.");
     }
+
+    data = fs.readFileSync(totalPath).toString();
 
     const dragon = new Dragon.Dragon();
     const interpreter = new Interpreter(dragon, totalFolder, fileName);
@@ -493,7 +491,7 @@ module.exports = class Interpreter {
       obj.set(expr.name, value);
       return value;
     } else if (obj.constructor == Object) {
-      obj[expr.name] = value;
+      obj[expr.name.lexeme] = value;
     }
   }
 
@@ -555,7 +553,7 @@ module.exports = class Interpreter {
     if (object instanceof DragonInstance) {
       return object.get(expr.name);
     } else if (object.constructor == Object) {
-      return object[expr.name];
+      return object[expr.name.lexeme];
     }
 
     throw new RuntimeError(
