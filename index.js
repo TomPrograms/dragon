@@ -1,4 +1,4 @@
-const Dragon = require("./src/dragon.js");
+const Dragon = require("./src/dragon.js").Dragon;
 
 const main = function() {
   let args = process.argv;

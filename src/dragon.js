@@ -4,16 +4,17 @@ const Resolver = require("./resolver.js");
 const Interpreter = require("./interpreter.js");
 const tokenTypes = require("./tokenTypes.js");
 const fs = require("fs");
+const path = require("path");
 const readline = require("readline");
 
-module.exports = class Dragon {
+module.exports.Dragon = class Dragon {
   constructor() {
     this.hadError = false;
     this.hadRuntimeError = false;
   }
 
   runPrompt() {
-    const interpreter = new Interpreter(this);
+    const interpreter = new Interpreter(this, process.cwd(), undefined);
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -32,7 +33,8 @@ module.exports = class Dragon {
   }
 
   runfile(filename) {
-    const interpreter = new Interpreter(this);
+    let justFileName = path.basename(filename);
+    const interpreter = new Interpreter(this, process.cwd(), justFileName);
 
     const fileData = fs.readFileSync(filename).toString();
     this.run(fileData, interpreter);
@@ -75,10 +77,14 @@ module.exports = class Dragon {
     throw new Error(`Line ${line}. ${error}`);
   }
 
-  runtimeError(error) {
+  runtimeError(error, fileName) {
     let line = error.token.line;
     if (error.token && line) {
-      console.error(`Error: [Line: ${error.token.line}] ${error.message}`);
+      if (fileName)
+        console.error(
+          `Error: [File: ${fileName}] [Line: ${error.token.line}] ${error.message}`
+        );
+      else console.error(`Error: [Line: ${error.token.line}] ${error.message}`);
     } else {
       console.error(error);
     }

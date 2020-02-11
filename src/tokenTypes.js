@@ -48,5 +48,6 @@ module.exports = {
   BREAK: "BREAK",
   CONTINUE: "CONTINUE",
   EXTENDS: "EXTENDS",
+  IMPORT: "IMPORT",
   EOF: "EOF"
 };

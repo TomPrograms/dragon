@@ -78,6 +78,7 @@ defineAst("Stmt", {
   Class: "name, superclass, methods",
   Block: "statements",
   Print: "expression",
+  Import: "path",
   While: "condition, body",
   For: "initializer, condition, increment, body",
   If: "condition, thenBranch, elseBranch",

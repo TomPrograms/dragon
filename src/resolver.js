@@ -243,6 +243,10 @@ module.exports = class Resolver {
     return null;
   }
 
+  visitImportStmt(stmt) {
+    this.resolve(stmt.path);
+  }
+
   visitPrintStmt(stmt) {
     this.resolve(stmt.expression);
   }

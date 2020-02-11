@@ -39,4 +39,4 @@ module.exports = class DragonClass extends Callable {
 
     return instance;
   }
-}
+};

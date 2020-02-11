@@ -22,6 +22,7 @@ const reservedWords = {
   switch: tokenTypes.SWITCH,
   case: tokenTypes.CASE,
   default: tokenTypes.DEFAULT,
+  import: tokenTypes.IMPORT,
   extends: tokenTypes.EXTENDS
 };
 

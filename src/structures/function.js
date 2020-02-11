@@ -57,4 +57,4 @@ module.exports = class DragonFunction extends Callable {
       this.isInitializer
     );
   }
-}
+};

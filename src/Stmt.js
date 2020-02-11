@@ -72,6 +72,17 @@ class Print extends Stmt {
   }
 }
 
+class Import extends Stmt {
+  constructor(path) {
+    super();
+    this.path = path;
+  }
+
+  accept(visitor) {
+    return visitor.visitImportStmt(this);
+  }
+}
+
 class While extends Stmt {
   constructor(condition, body) {
     super();
@@ -163,6 +174,7 @@ module.exports = {
   Class,
   Block,
   Print,
+  Import,
   While,
   For,
   If,

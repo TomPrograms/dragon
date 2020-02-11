@@ -42,6 +42,7 @@ run(100);
 
 - ✨ Easy-to-use typing system - dynamically but strongly typed for ease of use.
 - 🔥 Eloquent syntax - reduce code length by creating functions, objects and loops.
+- 🧹 Keep code clean - relative import system allows code to be easily split into files.
 - ⚡️ Interpreted language - streamline development with no compile times.
 - 🚀 Object-oriented programming - full object system with classes, methods, states and inheritance.
 - ⚙ Simple data structures included - strings, numbers, lists and dictionaries.

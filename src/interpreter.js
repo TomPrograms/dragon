@@ -1,13 +1,16 @@
 const tokenTypes = require("./tokenTypes.js");
 const RuntimeError = require("./runtimeError.js");
 const Environment = require("./environment.js");
+const Dragon = require("./dragon.js");
 const loadGlobalLib = require("./lib/globalLib.js");
+const path = require("path");
+const fs = require("fs");
 
 const Callable = require("./structures/callable.js");
 const StandardFn = require("./structures/standardFn.js");
 const DragonClass = require("./structures/class.js");
 const DragonFunction = require("./structures/function.js");
-const DragonInstance = require("./structures/instance.js"); 
+const DragonInstance = require("./structures/instance.js");
 
 class ContinueException extends Error {}
 class BreakException extends Error {}
@@ -19,8 +22,11 @@ class Return extends Error {
 }
 
 module.exports = class Interpreter {
-  constructor(Dragon) {
+  constructor(Dragon, baseDir, currentFile) {
     this.Dragon = Dragon;
+    this.baseDir = baseDir;
+    this.currentFile = currentFile;
+
     this.globals = new Environment();
     this.environment = this.globals;
     this.locals = new Map();
@@ -351,6 +357,26 @@ module.exports = class Interpreter {
     return null;
   }
 
+  visitImportStmt(stmt) {
+    let relativePath = this.evaluate(stmt.path);
+    let totalPath = path.join(this.baseDir, relativePath);
+    let totalFolder = path.dirname(totalPath);
+    let fileName = path.basename(totalPath);
+
+    if (!fs.existsSync(totalPath)) {
+      throw new RuntimeError(stmt, "Couldn't find imported file.");
+    }
+
+    const data = fs.readFileSync(totalPath).toString();
+
+    const dragon = new Dragon.Dragon();
+    const interpreter = new Interpreter(dragon, totalFolder, fileName);
+
+    dragon.run(data, interpreter);
+
+    return interpreter.globals.values.exports;
+  }
+
   visitPrintStmt(stmt) {
     let value = this.evaluate(stmt.expression);
     console.log(this.stringify(value));
@@ -587,8 +613,7 @@ module.exports = class Interpreter {
         this.execute(statements[i]);
       }
     } catch (error) {
-      console.log(error);
-      this.Dragon.runtimeError(error);
+      this.Dragon.runtimeError(error, this.currentFile);
     }
   }
 };

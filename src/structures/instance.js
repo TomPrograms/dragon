@@ -22,4 +22,4 @@ module.exports = class DragonInstance {
   toString() {
     return "<" + this.creatorClass.name + " instance>";
   }
-}
+};
