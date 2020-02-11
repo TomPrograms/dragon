@@ -74,8 +74,6 @@ $ dragon
 
 Author: [Tom](https://github.com/TomPrograms)
 
-Lox and Javascript were inspirational to the creation of this language.
-
 ## License
 
 [MIT](LICENSE)

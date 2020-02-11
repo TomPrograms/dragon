@@ -1,6 +1,13 @@
 const tokenTypes = require("./tokenTypes.js");
 const RuntimeError = require("./runtimeError.js");
 const Environment = require("./environment.js");
+const loadGlobalLib = require("./lib/globalLib.js");
+
+const Callable = require("./structures/callable.js");
+const StandardFn = require("./structures/standardFn.js");
+const DragonClass = require("./structures/class.js");
+const DragonFunction = require("./structures/function.js");
+const DragonInstance = require("./structures/instance.js"); 
 
 class ContinueException extends Error {}
 class BreakException extends Error {}
@@ -11,151 +18,6 @@ class Return extends Error {
   }
 }
 
-class Callable {
-  arity() {
-    return this.arityValue;
-  }
-}
-
-class StandardFn extends Callable {
-  constructor(arityValue, func) {
-    super();
-    this.arityValue = arityValue;
-    this.func = func;
-  }
-
-  call(interpreter, args, token) {
-    this.token = token;
-    return this.func.apply(this, args);
-  }
-}
-
-class DragonFunction extends Callable {
-  constructor(name, declaration, closure, isInitializer = false) {
-    super();
-    this.name = name;
-    this.declaration = declaration;
-    this.closure = closure;
-    this.isInitializer = isInitializer;
-  }
-
-  arity() {
-    return this.declaration.params.length;
-  }
-
-  toString() {
-    if (this.name === null) return "<fn>";
-    return `<function ${this.name}>`;
-  }
-
-  call(interpreter, args) {
-    let environment = new Environment(this.closure);
-    let params = this.declaration.params;
-    for (let i = 0; i < params.length; i++) {
-      let param = params[i];
-
-      let name = param["name"].lexeme;
-      let value = args[i];
-      if (args[i] === null) {
-        value = param["default"] ? param["default"].value : null;
-      }
-      environment.defineVar(name, value);
-    }
-
-    try {
-      interpreter.executeBlock(this.declaration.body, environment);
-    } catch (error) {
-      if (error instanceof Return) {
-        if (this.isInitializer) return this.closure.getVarAt(0, "this");
-        return error.value;
-      } else {
-        throw error;
-      }
-    }
-
-    if (this.isInitializer) return this.closure.getVarAt(0, "this");
-    return null;
-  }
-
-  bind(instance) {
-    let environment = new Environment(this.closure);
-    environment.defineVar("this", instance);
-    return new DragonFunction(
-      this.name,
-      this.declaration,
-      environment,
-      this.isInitializer
-    );
-  }
-}
-
-class DragonInstance {
-  constructor(creatorClass) {
-    this.creatorClass = creatorClass;
-    this.fields = {};
-  }
-
-  get(name) {
-    if (this.fields.hasOwnProperty(name.lexeme)) {
-      return this.fields[name.lexeme];
-    }
-
-    let method = this.creatorClass.findMethod(name.lexeme);
-    if (method) return method.bind(this);
-
-    throw new RuntimeError(name, "Couldn't get undefined property.");
-  }
-
-  set(name, value) {
-    this.fields[name.lexeme] = value;
-  }
-
-  toString() {
-    return "<" + this.creatorClass.name + " instance>";
-  }
-}
-
-class DragonClass extends Callable {
-  constructor(name, superclass, methods) {
-    super();
-    this.name = name;
-    this.superclass = superclass;
-    this.methods = methods;
-  }
-
-  findMethod(name) {
-    if (this.methods.hasOwnProperty(name)) {
-      return this.methods[name];
-    }
-
-    if (this.superclass !== null) {
-      return this.superclass.findMethod(name);
-    }
-
-    return undefined;
-  }
-
-  toString() {
-    return this.name;
-  }
-
-  arity() {
-    let initializer = this.findMethod("init");
-    return initializer ? initializer.arity() : 0;
-  }
-
-  call(interpreter, args) {
-    let instance = new DragonInstance(this);
-
-    let initializer = this.findMethod("init");
-    if (initializer) {
-      initializer.bind(instance).call(interpreter, args);
-    }
-
-    return instance;
-  }
-}
-
 module.exports = class Interpreter {
   constructor(Dragon) {
     this.Dragon = Dragon;
@@ -163,59 +25,7 @@ module.exports = class Interpreter {
     this.environment = this.globals;
     this.locals = new Map();
 
-    this.globals.defineVar(
-      "clock",
-      new StandardFn(0, function() {
-        return Date.now() / 1000;
-      })
-    );
-
-    this.globals.defineVar(
-      "len",
-      new StandardFn(1, function(obj) {
-        return obj.length;
-      })
-    );
-
-    this.globals.defineVar(
-      "str",
-      new StandardFn(1, function(value) {
-        return `${value}`;
-      })
-    );
-
-    this.globals.defineVar(
-      "float",
-      new StandardFn(1, function(value) {
-        if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value))
-          throw new RuntimeError(
-            this.token,
-            "Only numbers can be parsed to floats."
-          );
-        return parseFloat(value);
-      })
-    );
-
-    this.globals.defineVar(
-      "int",
-      new StandardFn(1, function(value) {
-        if (value === undefined || value === null) {
-          throw new RuntimeError(
-            this.token,
-            "Only numbers can be parsed to integers."
-          );
-        }
-
-        if (!/^-{0,1}\d+$/.test(value) && !/^\d+\.\d+$/.test(value)) {
-          throw new RuntimeError(
-            this.token,
-            "Only numbers can be parsed to integers."
-          );
-        }
-
-        return parseInt(value);
-      })
-    );
+    this.globals = loadGlobalLib(this.globals);
   }
 
   resolve(expr, depth) {

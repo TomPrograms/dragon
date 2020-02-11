@@ -13,6 +13,14 @@
     "dragon-lang",
     "programming-lang"
   ],
+  "files": [
+    "LICENSE",
+    "Changelog.md",
+    "Readme.md",
+    "index.js",
+    "bin/",
+    "src/"
+  ],
   "author": "Tom",
   "license": "MIT",
   "homepage": "https://github.com/tomprograms/dragon#readme"
