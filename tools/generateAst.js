@@ -81,6 +81,7 @@ defineAst("Stmt", {
   Import: "path",
   While: "condition, body",
   For: "initializer, condition, increment, body",
+  Try: "tryBranch, catchBranch, elseBranch, finallyBranch",
   If: "condition, thenBranch, elseBranch",
   Switch: "condition, branches, defaultBranch",
   Break: undefined,

@@ -23,7 +23,10 @@ const reservedWords = {
   case: tokenTypes.CASE,
   default: tokenTypes.DEFAULT,
   import: tokenTypes.IMPORT,
-  extends: tokenTypes.EXTENDS
+  extends: tokenTypes.EXTENDS,
+  try: tokenTypes.TRY,
+  catch: tokenTypes.CATCH,
+  finally: tokenTypes.FINALLY
 };
 
 class Token {

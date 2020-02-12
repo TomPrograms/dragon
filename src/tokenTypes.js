@@ -49,5 +49,8 @@ module.exports = {
   CONTINUE: "CONTINUE",
   EXTENDS: "EXTENDS",
   IMPORT: "IMPORT",
+  TRY: "TRY",
+  CATCH: "CATCH",
+  FINALLY: "FINALLY",
   EOF: "EOF"
 };

@@ -109,6 +109,20 @@ class For extends Stmt {
   }
 }
 
+class Try extends Stmt {
+  constructor(tryBranch, catchBranch, elseBranch, finallyBranch) {
+    super();
+    this.tryBranch = tryBranch;
+    this.catchBranch = catchBranch;
+    this.elseBranch = elseBranch;
+    this.finallyBranch = finallyBranch;
+  }
+
+  accept(visitor) {
+    return visitor.visitTryStmt(this);
+  }
+}
+
 class If extends Stmt {
   constructor(condition, thenBranch, elseBranch) {
     super();
@@ -177,6 +191,7 @@ module.exports = {
   Import,
   While,
   For,
+  Try,
   If,
   Switch,
   Break,

@@ -560,7 +560,46 @@ module.exports = class Parser {
     return new Stmt.Import(path);
   }
 
+  tryStatement() {
+    this.consume(tokenTypes.LEFT_BRACE, "Expected '{' after try statement.");
+
+    let tryBlock = this.block();
+
+    let catchBlock = null;
+    if (this.match(tokenTypes.CATCH)) {
+      this.consume(
+        tokenTypes.LEFT_BRACE,
+        "Expected '{' after catch statement."
+      );
+
+      catchBlock = this.block();
+    }
+
+    let elseBlock = null;
+    if (this.match(tokenTypes.ELSE)) {
+      this.consume(
+        tokenTypes.LEFT_BRACE,
+        "Expected '{' after catch statement."
+      );
+
+      elseBlock = this.block();
+    }
+
+    let finallyBlock = null;
+    if (this.match(tokenTypes.FINALLY)) {
+      this.consume(
+        tokenTypes.LEFT_BRACE,
+        "Expected '{' after catch statement."
+      );
+
+      finallyBlock = this.block();
+    }
+
+    return new Stmt.Try(tryBlock, catchBlock, elseBlock, finallyBlock);
+  }
+
   statement() {
+    if (this.match(tokenTypes.TRY)) return this.tryStatement();
     if (this.match(tokenTypes.SWITCH)) return this.switchStatement();
     if (this.match(tokenTypes.RETURN)) return this.returnStatement();
     if (this.match(tokenTypes.CONTINUE)) return this.continueStatement();
