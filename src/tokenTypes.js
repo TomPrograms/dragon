@@ -32,6 +32,7 @@ module.exports = {
   FUNCTION: "FUNCTION",
   FOR: "FOR",
   IF: "IF",
+  ELIF: "ELIF",
   ELSE: "ELSE",
   SWITCH: "SWITCH",
   CASE: "CASE",

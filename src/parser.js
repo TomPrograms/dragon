@@ -375,12 +375,30 @@ module.exports = class Parser {
     this.consume(tokenTypes.RIGHT_PAREN, "Expected ')' after if condition.");
 
     let thenBranch = this.statement();
+
+    let elifBranches = [];
+    while (this.match(tokenTypes.ELIF)) {
+      this.consume(tokenTypes.LEFT_PAREN, "Expected '(' after 'elif'.");
+      let elifCondition = this.expression();
+      this.consume(
+        tokenTypes.RIGHT_PAREN,
+        "Expected ')' after elif condition."
+      );
+
+      let branch = this.statement();
+
+      elifBranches.push({
+        condition: elifCondition,
+        branch
+      });
+    }
+
     let elseBranch = null;
     if (this.match(tokenTypes.ELSE)) {
       elseBranch = this.statement();
     }
 
-    return new Stmt.If(condition, thenBranch, elseBranch);
+    return new Stmt.If(condition, thenBranch, elifBranches, elseBranch);
   }
 
   whileStatement() {
