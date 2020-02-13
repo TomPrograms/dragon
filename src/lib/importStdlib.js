@@ -17,6 +17,8 @@ module.exports = function(name) {
   switch (name) {
     case "os":
       return loadModule("./os.js");
+    case "time":
+      return loadModule("./time.js");
   }
 
   return null;
