@@ -1,5 +1,4 @@
 const StandardFn = require("../structures/standardFn.js");
-const Expr = require("../Expr.js");
 
 /**
  * Load all standard global functions to interpreter.

@@ -15,7 +15,7 @@ module.exports = class DragonFunction extends Callable {
   }
 
   toString() {
-    if (this.name === null) return "<fn>";
+    if (this.name === null) return "<function>";
     return `<function ${this.name}>`;
   }
 
