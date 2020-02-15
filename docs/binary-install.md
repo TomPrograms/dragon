@@ -20,3 +20,4 @@ You could also run a file from within the Dragon shell, by importing the relevan
 
 ```
 > import("./test.drg");
+```
