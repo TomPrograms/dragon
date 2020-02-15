@@ -1,7 +1,7 @@
 {
   "name": "dragon-lang",
   "version": "1.0.0",
-  "description": "Object orientated, dynamically typed, interpreted programming language inspired by Lox and Javascript.",
+  "description": "Object orientated, dynamically typed, interpreted programming language inspired by Python and Javascript.",
   "main": "index.js",
   "scripts": {},
   "repository": "TomPrograms/dragon",
