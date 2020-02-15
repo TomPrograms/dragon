@@ -49,27 +49,12 @@ run(100);
 - 🧠 Great control flow - if and else, for and while, switch and case all included.
 - 🤖 Turing Complete - all features needed to build a complete turing machine.
 
-<!--
 ## Installation and Usage
 
-You can install Dragon through the NPM:
+You can either install and use Dragon using:
 
-```
-$ npm i -g dragon-lang
-```
-
-Executing a file using Dragon:
-
-```
-$ dragon test.drg
-```
-
-Using the Dragon shell:
-
-```
-$ dragon
-```
--->
+- [NPM](./docs/node-install.md) - Tiny size but requires NPM + Node to be installed.
+- [Standalone Binary](./docs/binary-install.md) - You can download a larger, no requirements binary.
 
 ## Credit
 
