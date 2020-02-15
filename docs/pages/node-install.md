@@ -1,6 +1,6 @@
-## Installing
+# Installing
 
-You can install Dragon using NodeJS by running:
+You can install Dragon using NPM by running:
 
 ```
 $ npm i -g dragon-lang
@@ -27,3 +27,5 @@ You could also run a file from within the Dragon shell, by importing the relevan
 ```
 > import("./test.drg");
 ```
+
+Next: [Hello World](./hello-world.md)

@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 You can download the relevant binary by checking this [page](https://github.com/tomprograms/dragon/releases) and downloading the most recent release for your platform. In order to update, you must download a new binary.
 
@@ -21,3 +21,5 @@ You could also run a file from within the Dragon shell, by importing the relevan
 ```
 > import("./test.drg");
 ```
+
+Next: [Hello World](./hello-world.md)

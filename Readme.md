@@ -1,10 +1,14 @@
 <div align="center">
   <img alt="Dragon Lang Logo" src="./docs/logo.png">
 
-  <p>Dragon is an object orientated, interpreted language. Dragon is a quick and easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible.</p>
+  <p>Dragon is an object orientated, interpreted language that acts as an easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible. </p>
 
   <a href="./LICENSE">
     <img alt="Dragon Lang License Badge" src="https://img.shields.io/badge/license-MIT-blue">
+  </a>
+
+  <a href="./docs/docs.md">
+    <img src="https://img.shields.io/badge/click-to%20get%20started-brightgreen">
   </a>
 </div>
 
@@ -49,12 +53,9 @@ run(100);
 - 🧠 Great control flow - if and else, for and while, switch and case all included.
 - 🤖 Turing Complete - all features needed to build a complete turing machine.
 
-## Installation and Usage
+## Documentation
 
-You can either install and use Dragon using:
-
-- [NPM](./docs/node-install.md) - Tiny size and automatic updater but requires NPM + Node to be installed.
-- [Standalone Binary](./docs/binary-install.md) - You can download a larger, no requirements binary.
+You can get started by following the tutorial provided with the documentation [here](./docs/docs.md).
 
 ## Credit
 
