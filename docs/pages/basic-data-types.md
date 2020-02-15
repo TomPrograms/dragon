@@ -22,7 +22,6 @@ false
 Strings can be declared in Dragon by wrapping data in either `""` or `''`. Individual characters in the string can be accessed but not mutated through subscripting, with indexing beginning at 0. Minus subscripting indexes can be used to access data starting from the other side.
 
 ```js
-'abc';
 "abc";
 
 "abc"[0]; // equals a
@@ -43,10 +42,10 @@ Numbers in Dragon can be either floats or integers.
 Arrays in Dragon can contain any data types. Arrays are encased by `[]` with each value separated by a `,`. Arrays indexes that are out of range can be mutated but not accessed with subscripting, with indexing starting at 0.
 
 ```js
-[1, '2'];
+[1, "2"];
 [];
 
-[1, '2'][0]; // equals 1
+[1, "2"][0]; // equals 1
 [1, 2][2]; // throws error
 
 [1, 2][1] = 3; // array becomes equal to [1, 3]
@@ -73,7 +72,7 @@ Dictionaries in Dragon work with a standard key, value system, with values being
 Null is a data type that is used within Dragon to represent empty or undefined data.
 
 ```js
-null
+null;
 ```
 
 ## Booleans
@@ -81,8 +80,8 @@ null
 `true` and `false` booleans are a data type within Dragon. Booleans must be declared in all lowercase.
 
 ```js
-true
-false
+true;
+false;
 ```
 
 Next: [Variables](./variables.md)

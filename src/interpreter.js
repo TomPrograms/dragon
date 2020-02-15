@@ -542,7 +542,7 @@ module.exports = class Interpreter {
       }
       return obj[index];
     }
-    
+
     // other data types
     else if (
       obj.constructor == Object ||
@@ -552,8 +552,8 @@ module.exports = class Interpreter {
       obj instanceof DragonModule
     ) {
       return obj[index] || null;
-    } 
-    
+    }
+
     // strings
     else if (typeof obj === "string") {
       // convert minus indexes to relevant positive number
@@ -572,7 +572,7 @@ module.exports = class Interpreter {
 
       if (index >= obj.length) {
         throw new RuntimeError(expr.closeBracket, "String index out of range.");
-      }      
+      }
       return obj.charAt(index);
     }
 
