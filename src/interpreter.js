@@ -1,5 +1,4 @@
 const tokenTypes = require("./tokenTypes.js");
-const RuntimeError = require("./runtimeError.js");
 const Environment = require("./environment.js");
 const Dragon = require("./dragon.js");
 const loadGlobalLib = require("./lib/globalLib.js");
@@ -14,14 +13,12 @@ const DragonFunction = require("./structures/function.js");
 const DragonInstance = require("./structures/instance.js");
 const DragonModule = require("./structures/module.js");
 
-class ContinueException extends Error {}
-class BreakException extends Error {}
-class Return extends Error {
-  constructor(value) {
-    super(value);
-    this.value = value;
-  }
-}
+const {
+  RuntimeError,
+  ContinueException,
+  BreakException,
+  ReturnException
+} = require("./errors.js");
 
 module.exports = class Interpreter {
   constructor(Dragon, baseDir, currentFile) {
@@ -476,7 +473,7 @@ module.exports = class Interpreter {
     let value = null;
     if (stmt.value != null) value = this.evaluate(stmt.value);
 
-    throw new Return(value);
+    throw new ReturnException(value);
   }
 
   visitFunctionExpr(expr) {
@@ -668,6 +665,7 @@ module.exports = class Interpreter {
         this.execute(statements[i]);
       }
     } catch (error) {
+      console.log(error);
       this.Dragon.runtimeError(error, this.currentFile);
     }
   }
