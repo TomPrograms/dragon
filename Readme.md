@@ -3,7 +3,7 @@
 
   <p>Dragon is an object orientated, interpreted language that acts as an easy-to-use scripting language, that employs dynamic but strong typing and object oriented programming to make programming as nice as possible. </p>
 
-  <img src="https://img.shields.io/bundlephobia/minzip/dragon-lang">
+  <img src="https://img.shields.io/bundlephobia/minzip/dragon-lang?label=npm%20minzipped%20size">
   <img src="https://img.shields.io/github/v/release/tomprograms/dragon"> 
   <img src="https://img.shields.io/badge/license-MIT-blue">
   <a href="./docs">
