@@ -22,7 +22,7 @@ module.exports = class DragonClass extends Callable {
   }
 
   toString() {
-    return this.name;
+    return `<class ${this.name}>`;
   }
 
   arity() {
