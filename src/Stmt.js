@@ -73,9 +73,10 @@ class Print extends Stmt {
 }
 
 class Import extends Stmt {
-  constructor(path) {
+  constructor(path, closeBracket) {
     super();
     this.path = path;
+    this.closeBracket = closeBracket;
   }
 
   accept(visitor) {

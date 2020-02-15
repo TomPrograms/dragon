@@ -104,6 +104,10 @@ module.exports = class Lexer {
     return this.code.charAt(this.current + 1);
   }
 
+  previous() {
+    return this.code.charAt(this.current - 1);
+  }
+
   parseString(stringChar = '"') {
     while (this.peek() !== stringChar && !this.endOfCode()) {
       if (this.peek() === "\n") this.line = +1;
@@ -111,7 +115,11 @@ module.exports = class Lexer {
     }
 
     if (this.endOfCode()) {
-      this.Dragon.throw(this.line, "Unterminated string.");
+      this.Dragon.lexerError(
+        this.line,
+        this.previous(),
+        "Unterminated string."
+      );
       return;
     }
 
@@ -250,7 +258,7 @@ module.exports = class Lexer {
       default:
         if (this.isDigit(c)) this.parseNumber();
         else if (this.isAlpha(c)) this.identifyKeyword();
-        else this.Dragon.throw(this.line, "Unexpected character.");
+        else this.Dragon.lexerError(this.line, c, "Unexpected character.");
     }
   }
 

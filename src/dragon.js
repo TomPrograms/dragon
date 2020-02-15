@@ -8,7 +8,9 @@ const path = require("path");
 const readline = require("readline");
 
 module.exports.Dragon = class Dragon {
-  constructor() {
+  constructor(filename) {
+    this.filename = filename;
+
     this.hadError = false;
     this.hadRuntimeError = false;
   }
@@ -33,8 +35,8 @@ module.exports.Dragon = class Dragon {
   }
 
   runfile(filename) {
-    let justFileName = path.basename(filename);
-    const interpreter = new Interpreter(this, process.cwd(), justFileName);
+    this.filename = path.basename(filename);
+    const interpreter = new Interpreter(this, process.cwd());
 
     const fileData = fs.readFileSync(filename).toString();
     this.run(fileData, interpreter);
@@ -46,6 +48,8 @@ module.exports.Dragon = class Dragon {
   run(code, interpreter) {
     const lexer = new Lexer(code, this);
     const tokens = lexer.scan();
+
+    if (this.hadError === true) return;
 
     const parser = new Parser(tokens, this);
     const statements = parser.parse();
@@ -61,28 +65,32 @@ module.exports.Dragon = class Dragon {
   }
 
   report(line, where, message) {
-    console.error(`[Line: ${line}] Error${where}: ${message}`);
+    if (this.filename)
+      console.error(
+        `[File: ${this.filename}] [Line: ${line}] Error${where}: ${message}`
+      );
+    else console.error(`[Line: ${line}] Error${where}: ${message}`);
     this.hadError = true;
   }
 
   error(token, errorMessage) {
     if (token.type === tokenTypes.EOF) {
-      this.report(token.line, "at end", errorMessage);
+      this.report(token.line, " at end", errorMessage);
     } else {
-      this.report(token.line, " at '" + token.lexeme + "'", errorMessage);
+      this.report(token.line, ` at '${token.lexeme}'`, errorMessage);
     }
   }
 
-  throw(line, error) {
-    throw new Error(`Line ${line}. ${error}`);
+  lexerError(line, char, msg) {
+    this.report(line, ` at '${char}'`, msg);
   }
 
-  runtimeError(error, fileName) {
+  runtimeError(error) {
     let line = error.token.line;
     if (error.token && line) {
-      if (fileName)
+      if (this.filename)
         console.error(
-          `Error: [File: ${fileName}] [Line: ${error.token.line}] ${error.message}`
+          `Error: [File: ${this.filename}] [Line: ${error.token.line}] ${error.message}`
         );
       else console.error(`Error: [Line: ${error.token.line}] ${error.message}`);
     } else {
