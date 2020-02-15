@@ -1,4 +1,5 @@
 const Callable = require("./callable.js");
+const DragonInstance = require("./instance.js");
 
 module.exports = class DragonClass extends Callable {
   constructor(name, superclass, methods) {
