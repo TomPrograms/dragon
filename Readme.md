@@ -53,7 +53,7 @@ run(100);
 
 You can either install and use Dragon using:
 
-- [NPM](./docs/node-install.md) - Tiny size but requires NPM + Node to be installed.
+- [NPM](./docs/node-install.md) - Tiny size and automatic updater but requires NPM + Node to be installed.
 - [Standalone Binary](./docs/binary-install.md) - You can download a larger, no requirements binary.
 
 ## Credit

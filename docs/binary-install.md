@@ -1,6 +1,6 @@
 ## Installation
 
-You can download the relevant binary by checking this [page](https://github.com/tomprograms/dragon/releases) and downloading the most recent release for your platform.
+You can download the relevant binary by checking this [page](https://github.com/tomprograms/dragon/releases) and downloading the most recent release for your platform. In order to update, you must download a new binary.
 
 ## Usage
 
@@ -10,7 +10,7 @@ To run a file using Dragon, you must run the downloaded binary with the first ar
 $ dragon.exe test.drg
 ```
 
-You can use the Dragon shell by running:
+You can then use the Dragon shell by running:
 
 ```
 $ dragon.exe
