@@ -492,23 +492,34 @@ module.exports = class Interpreter {
           index += obj.length;
         }
       }
- 
+
       // pad array with null instead of creating empty items
       while (obj.length < index) {
         obj.push(null);
       }
+
+      obj[index] = value;
+    } else if (
+      obj.constructor == Object ||
+      obj instanceof DragonInstance ||
+      obj instanceof DragonFunction ||
+      obj instanceof DragonClass ||
+      obj instanceof DragonModule
+    ) {
+      obj[index] = value;
     }
 
-    obj[index] = value;
+    // value doesn't support subscript assignment
+    else {
+      throw new RuntimeError(
+        expr.obj.name,
+        "Only arrays, dictionaries, classes and instances can be mutated by a subscript."
+      );
+    }
   }
 
   visitSubscriptExpr(expr) {
     let obj = this.evaluate(expr.callee);
-    if (!Array.isArray(obj) && typeof obj !== "string" && obj.constructor !== Object)
-      throw new RuntimeError(
-        expr.callee.name,
-        "Only arrays, strings and dictionaries can be subscripted."
-      );
 
     let index = this.evaluate(expr.index);
     if (Array.isArray(obj)) {
@@ -519,14 +530,58 @@ module.exports = class Interpreter {
         );
       }
 
+      // convert minus indexes to relevant positive number
+      if (index < 0 && obj.length !== 0) {
+        while (index < 0) {
+          index += obj.length;
+        }
+      }
+
       if (index >= obj.length) {
         throw new RuntimeError(expr.closeBracket, "Array index out of range.");
       }
       return obj[index];
-    } else if (obj.constructor == Object) {
-      return obj[index];
-    } else if (typeof obj === "string") {
+    }
+    
+    // other data types
+    else if (
+      obj.constructor == Object ||
+      obj instanceof DragonInstance ||
+      obj instanceof DragonFunction ||
+      obj instanceof DragonClass ||
+      obj instanceof DragonModule
+    ) {
+      return obj[index] || null;
+    } 
+    
+    // strings
+    else if (typeof obj === "string") {
+      // convert minus indexes to relevant positive number
+      if (!Number.isInteger(index)) {
+        throw new RuntimeError(
+          expr.closeBracket,
+          "Only integers can be used to index an array."
+        );
+      }
+
+      if (index < 0 && obj.length !== 0) {
+        while (index < 0) {
+          index += obj.length;
+        }
+      }
+
+      if (index >= obj.length) {
+        throw new RuntimeError(expr.closeBracket, "String index out of range.");
+      }      
       return obj.charAt(index);
+    }
+
+    // value doesn't support subscripting
+    else {
+      throw new RuntimeError(
+        expr.callee.name,
+        "Only arrays, strings, dictionaries, classes and instances can be subscripted."
+      );
     }
   }
 
