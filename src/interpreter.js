@@ -486,10 +486,16 @@ module.exports = class Interpreter {
     let value = this.evaluate(expr.value);
 
     if (Array.isArray(obj)) {
+      // convert minus indexes to relevant positive number
       if (index < 0 && obj.length !== 0) {
         while (index < 0) {
           index += obj.length;
         }
+      }
+ 
+      // pad array with null instead of creating empty items
+      while (obj.length < index) {
+        obj.push(null);
       }
     }
 
@@ -498,10 +504,10 @@ module.exports = class Interpreter {
 
   visitSubscriptExpr(expr) {
     let obj = this.evaluate(expr.callee);
-    if (!Array.isArray(obj) && obj.constructor !== Object)
+    if (!Array.isArray(obj) && typeof obj !== "string" && obj.constructor !== Object)
       throw new RuntimeError(
         expr.callee.name,
-        "Only arrays and dictionaries can be subscripted."
+        "Only arrays, strings and dictionaries can be subscripted."
       );
 
     let index = this.evaluate(expr.index);
@@ -509,7 +515,7 @@ module.exports = class Interpreter {
       if (!Number.isInteger(index)) {
         throw new RuntimeError(
           expr.closeBracket,
-          "Only numbers can be used to index an array."
+          "Only integers can be used to index an array."
         );
       }
 
@@ -519,6 +525,8 @@ module.exports = class Interpreter {
       return obj[index];
     } else if (obj.constructor == Object) {
       return obj[index];
+    } else if (typeof obj === "string") {
+      return obj.charAt(index);
     }
   }
 
