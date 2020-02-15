@@ -1,6 +1,6 @@
 # The Dragon Programming Language
 
-Dragon is an interpreted language, built ontop of NodeJS. It features syntax high-level languages such as Python and Javascript and supports full object-orientated programming and the control flow and data types you know and love. Below is a snippet of Dragon code, showcasing some of its functionality:
+Dragon is an interpreted language, built ontop of NodeJS. It features syntax high-level languages such as Python and Javascript and supports full object-orientated programming and the control flow and data types you know and love. Below is a snippet of Dragon code, showcasing a class-based fibonacci sequence program:
 
 ```js
 class Fibonacci {

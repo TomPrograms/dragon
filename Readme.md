@@ -7,7 +7,7 @@
     <img alt="Dragon Lang License Badge" src="https://img.shields.io/badge/license-MIT-blue">
   </a>
 
-  <a href="./docs/docs.md">
+  <a href="./docs">
     <img src="https://img.shields.io/badge/click-to%20get%20started-brightgreen">
   </a>
 </div>
@@ -55,7 +55,7 @@ run(100);
 
 ## Documentation
 
-You can get started by following the tutorial provided with the documentation [here](./docs/docs.md).
+You can get started by following the tutorial provided with the documentation [here](./docs).
 
 ## Credit
 
