@@ -728,7 +728,6 @@ module.exports = class Interpreter {
         this.execute(statements[i]);
       }
     } catch (error) {
-      console.log(error);
       this.Dragon.runtimeError(error, this.currentFile);
     }
   }
