@@ -218,7 +218,7 @@ module.exports = class Lexer {
           this.match("=") ? tokenTypes.EQUAL_EQUAL : tokenTypes.EQUAL
         );
         break;
-        
+
       case "<":
         if (this.match("=")) {
           this.addToken(tokenTypes.LESS_EQUAL);
