@@ -3,11 +3,12 @@
 ### Added
 
 - `^`, `&`, `|`, `>>` and `<<` operators.
+- Added `math` standard library.
 
 ### Fixed
 
 - Operator precedence - ensured `**` higher precedence than other operators.
-- Bug with standard library functions throwing errors.
+- Bug with standard libraries throwing errors.
 
 ### Changed
 

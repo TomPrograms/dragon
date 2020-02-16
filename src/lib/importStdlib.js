@@ -7,9 +7,13 @@ const loadModule = function(moduleName, modulePath) {
 
   let keys = Object.keys(moduleData);
   for (let i = 0; i < keys.length; i++) {
-    let currentFunc = moduleData[keys[i]];
+    let currentItem = moduleData[keys[i]];
 
-    newModule[keys[i]] = new StandardFn(currentFunc.length, currentFunc);
+    if (typeof currentItem === "function") {
+      newModule[keys[i]] = new StandardFn(currentItem.length, currentItem);
+    } else {
+      newModule[keys[i]] = currentItem;
+    }
   }
 
   return newModule;
@@ -21,6 +25,8 @@ module.exports = function(name) {
       return loadModule("os", "./os.js");
     case "time":
       return loadModule("os", "./time.js");
+    case "math":
+      return loadModule("math", "./math.js");
   }
 
   return null;
