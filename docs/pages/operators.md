@@ -36,4 +36,4 @@ Operators have a clear order of precedence, similair to mathematics where operat
 - `==` and `!=`
 - `and` and `or`
 
-Next: [Functions](./functions.md)
+Next: [Control Flow](./control-flow.md)
