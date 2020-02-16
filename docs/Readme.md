@@ -18,6 +18,7 @@ Dragon Language:
     - [Null](./pages/basic-data-types.md#Null)
     - [Booleans](./pages/basic-data-types#Booleans)
   - [Variables](./pages/variables.md)
+  - [Operators](./pages/operators.md)
   - [Functions](./pages/functions.md)
     - [Standard Functions](./pages/functions.md#Standard%20Functions)
     - [Anonymous Functions](./pages/functions.md#Anonymous%20Functions)

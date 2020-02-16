@@ -52,4 +52,4 @@ var a = "1";
 print(a); // outputs 1
 ```
 
-Next: [Functions](./functions.md)
+Next: [Operators](./operators.md)
