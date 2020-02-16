@@ -1,3 +1,4 @@
+const RuntimeError = require("../errors.js").RuntimeError;
 const StandardFn = require("../structures/standardFn.js");
 
 /**
