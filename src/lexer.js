@@ -17,6 +17,7 @@ const reservedWords = {
   this: tokenTypes.THIS,
   true: tokenTypes.TRUE,
   var: tokenTypes.VAR,
+  do: tokenTypes.DO,
   while: tokenTypes.WHILE,
   break: tokenTypes.BREAK,
   continue: tokenTypes.CONTINUE,

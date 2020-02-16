@@ -655,7 +655,36 @@ module.exports = class Parser {
     return new Stmt.Try(tryBlock, catchBlock, elseBlock, finallyBlock);
   }
 
+  doStatement() {
+    try {
+      this.loopDepth += 1;
+
+      let doBranch = this.statement();
+
+      this.consume(
+        tokenTypes.WHILE,
+        "Expected while statement after do block."
+      );
+      this.consume(
+        tokenTypes.LEFT_PAREN,
+        "Expected '(' after while statement."
+      );
+
+      let whileCondition = this.expression();
+
+      this.consume(
+        tokenTypes.RIGHT_PAREN,
+        "Expected ')' after while statement."
+      );
+
+      return new Stmt.Do(doBranch, whileCondition);
+    } finally {
+      this.loopDepth -= 1;
+    }
+  }
+
   statement() {
+    if (this.match(tokenTypes.DO)) return this.doStatement();
     if (this.match(tokenTypes.TRY)) return this.tryStatement();
     if (this.match(tokenTypes.SWITCH)) return this.switchStatement();
     if (this.match(tokenTypes.RETURN)) return this.returnStatement();

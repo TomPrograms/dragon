@@ -50,6 +50,7 @@ module.exports = {
   THIS: "THIS",
   TRUE: "TRUE",
   VAR: "VAR",
+  DO: "DO",
   WHILE: "WHILE",
   BREAK: "BREAK",
   CONTINUE: "CONTINUE",

@@ -8,7 +8,7 @@ module.exports.round = function(num) {
     );
 
   return Math.round(num);
-}
+};
 
 module.exports.sqrt = function(num) {
   if (isNaN(num) || num === null)
@@ -18,7 +18,7 @@ module.exports.sqrt = function(num) {
     );
 
   return Math.sqrt(num);
-}
+};
 
 module.exports.floor = function(num) {
   if (isNaN(num) || num === null)
@@ -28,7 +28,7 @@ module.exports.floor = function(num) {
     );
 
   return Math.floor(num);
-}
+};
 
 module.exports.sin = function(num) {
   if (isNaN(num) || num === null)
@@ -38,7 +38,7 @@ module.exports.sin = function(num) {
     );
 
   return Math.sin(num);
-}
+};
 
 module.exports.cos = function(num) {
   if (isNaN(num) || num === null)
@@ -48,7 +48,7 @@ module.exports.cos = function(num) {
     );
 
   return Math.cos(num);
-}
+};
 
 module.exports.tan = function(num) {
   if (isNaN(num) || num === null)
@@ -58,7 +58,7 @@ module.exports.tan = function(num) {
     );
 
   return Math.tan(num);
-}
+};
 
 module.exports.radians = function(angle) {
   if (isNaN(angle) || angle === null)
@@ -68,7 +68,7 @@ module.exports.radians = function(angle) {
     );
 
   return angle * (Math.PI / 180);
-}
+};
 
 module.exports.degrees = function(angle) {
   if (isNaN(angle) || angle === null)
@@ -78,6 +78,6 @@ module.exports.degrees = function(angle) {
     );
 
   return angle * (180 / Math.PI);
-} 
+};
 
 module.exports.Pi = Math.PI;

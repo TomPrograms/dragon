@@ -1,6 +1,6 @@
 # Operators
 
-The majority of operators seen in programming languages are also seen within Dragon, including bitwise, mathematical and other operators, ordered in a clear hierarchy of precedence.  
+The majority of operators seen in programming languages are also seen within Dragon, including bitwise, mathematical and other operators, ordered in a clear hierarchy of precedence.
 
 ## Operators
 
@@ -29,11 +29,11 @@ Operators have a clear order of precedence, similair to mathematics where operat
 - `**`
 - `/`, `*` and `%`
 - `+` and `-`
-- ``<<`` and `>>`
-- ``&``
-- ``|`` and ``^``
-- ``>`` and ``<``
-- ``==`` and ``!=``
-- ``and`` and ``or``
+- `<<` and `>>`
+- `&`
+- `|` and `^`
+- `>` and `<`
+- `==` and `!=`
+- `and` and `or`
 
 Next: [Functions](./functions.md)

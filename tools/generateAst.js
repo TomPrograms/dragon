@@ -79,6 +79,7 @@ defineAst("Stmt", {
   Block: "statements",
   Print: "expression",
   Import: "path, closeBracket",
+  Do: "doBranch, whileCondition",
   While: "condition, body",
   For: "initializer, condition, increment, body",
   Try: "tryBranch, catchBranch, elseBranch, finallyBranch",

@@ -2,8 +2,9 @@
 
 ### Added
 
+- `do {} while ()` statements.
 - `^`, `&`, `|`, `>>` and `<<` operators.
-- Added `math` standard library.
+- `math` standard library.
 
 ### Fixed
 

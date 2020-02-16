@@ -46,7 +46,8 @@ const LoopType = {
   NONE: "NONE",
   WHILE: "WHILE",
   SWITCH: "SWITCH",
-  FOR: "FOR"
+  FOR: "FOR",
+  DO: "DO"
 };
 
 module.exports = class Resolver {
@@ -318,6 +319,18 @@ module.exports = class Resolver {
     this.currentLoop = LoopType.WHILE;
     this.resolve(stmt.body);
     this.currentLoop = enclosingType;
+
+    return null;
+  }
+
+  visitDoStmt(stmt) {
+    this.resolve(stmt.whileCondition);
+
+    let enclosingType = this.currentLoop;
+    this.currentLoop = LoopType.DO;
+    this.resolve(stmt.doBranch);
+    this.currentLoop = enclosingType;
+
     return null;
   }
 
