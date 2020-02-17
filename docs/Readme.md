@@ -39,3 +39,4 @@ Dragon Language:
   - [Module System](./pages/modules.md)
     - [Importing](./pages/modules.md#Importing)
     - [Exporting](./pages/modules.md#Exporting)
+    - [Standard Modules](./pages/modules.md#Standard-Modules)

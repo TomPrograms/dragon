@@ -4,10 +4,10 @@ Dragon contains a similar import system to NodeJS - using relative paths, reserv
 
 ## Importing
 
-Both files and [standard libraries](./standard-library.md#Libraries) can be imported. In the case of importing other Dragon files, a relative path should be provided to the function `import` which will return the exported data from the specified file. In the case of importing standard libraries, the library name should be passed to the `import` function which will return data (typically functions) that can be utilised in your program.
+Both files and standard modules can be imported. In the case of importing other Dragon files, a relative path should be provided to the function `import` which will return the exported data from the specified file. In the case of importing standard libraries, the module name should be passed to the `import` function which will return data (typically functions) that can be utilised in your program.
 
 ```js
-// importing standard library
+// importing standard module
 var os = import("os");
 
 // importing Dragon file
@@ -73,3 +73,37 @@ var file = import("./test2.drg");
 print(file); // prints "<function>"
 file(); // prints "yes"
 ```
+
+## Standard Modules
+
+Standard modules are included with Dragon to provide extra in-built functionality. Standard modules can be imported by using the `import` function and providing the name of the standard module.
+
+```js
+var time = import("time");
+
+print(time.time());
+```
+
+### Current Standard Modules
+
+- Time
+  - .time() - get epoch timestamp.
+  - .localTime(epoch) - get timestamp formatted to computer's local area. Can be provided epoch time to format, else defaults to current epoch time.
+  - .sleep(ms) - stop program running for specified amount of milliseconds.
+- OS
+  - .read(path, encoding) - returns contents of file at path, using encoding with defaults to UTF-8.
+  - .write(path, data, encoding) - writes data (defaults to "") to file at path with encoding (defaults to "UTF-8").
+  - .delete(path) - deletes file at path.
+  - .mkdir(path) - makes folder at path.
+  - .deletedir(path) - deletes folder at path.
+  - .listdir(path) - returns contents of folder at path in a list.
+- Math
+  - .round(number) - rounds number to nearest integer.
+  - .sqrt(number) - square roots number.
+  - .floor(number) - rounds down number.
+  - .sin(num) - finds sin value of number.
+  - .cos(num) - finds cos value of number.
+  - .tan(num) - finds tan value of number.
+  - .radians(degrees) - converts degrees to radians.
+  - .degrees(radians) - converts radians to degrees.
+  - .Pi - returns approximated value of Pi.
