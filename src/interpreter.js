@@ -452,14 +452,19 @@ module.exports = class Interpreter {
     dragon.run(data, interpreter);
 
     let exported = interpreter.globals.values.exports;
-    let newModule = new DragonModule();
 
-    let keys = Object.keys(exported);
-    for (let i = 0; i < keys.length; i++) {
-      newModule[keys[i]] = exported[keys[i]];
+    if (typeof exported === "object") {
+      let newModule = new DragonModule();
+  
+      let keys = Object.keys(exported);
+      for (let i = 0; i < keys.length; i++) {
+        newModule[keys[i]] = exported[keys[i]];
+      }
+  
+      return newModule;
     }
 
-    return newModule;
+    return exported;
   }
 
   visitPrintStmt(stmt) {
