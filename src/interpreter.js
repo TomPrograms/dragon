@@ -488,7 +488,7 @@ module.exports = class Interpreter {
 
   visitVarStmt(stmt) {
     let value = null;
-    if (stmt.initializer !== undefined) {
+    if (stmt.initializer !== null) {
       value = this.evaluate(stmt.initializer);
     }
 
