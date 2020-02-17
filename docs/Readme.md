@@ -33,3 +33,6 @@ Dragon Language:
     - [Calling Functions](./pages/functions.md#Calling-Functions)
     - [Returns](./pages/functions.md#Returns)
     - [Parameters](./pages/functions.md#Parameters)
+  - [Classes](./pages/classes.md)
+    - [Creating Classes](./pages/classes.md#Creating-Classes)
+    - [Inheritance](./pages/classes.md#Inheritance)

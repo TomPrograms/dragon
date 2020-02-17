@@ -146,3 +146,5 @@ main(function(*args) {
   print(args);
 });
 ```
+
+Next: [Classes](./classes.md)
