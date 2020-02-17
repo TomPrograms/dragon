@@ -10,7 +10,7 @@ To run a file using Dragon, you must run the downloaded binary with the first ar
 $ dragon.exe test.drg
 ```
 
-You can then use the Dragon shell by running:
+You can also use the Dragon shell by running:
 
 ```
 $ dragon.exe
