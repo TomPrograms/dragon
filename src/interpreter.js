@@ -453,14 +453,16 @@ module.exports = class Interpreter {
 
     let exported = interpreter.globals.values.exports;
 
-    if (typeof exported === "object") {
+    const isDict = obj => obj.constructor === Object;
+
+    if (isDict(exported)) {
       let newModule = new DragonModule();
-  
+
       let keys = Object.keys(exported);
       for (let i = 0; i < keys.length; i++) {
         newModule[keys[i]] = exported[keys[i]];
       }
-  
+
       return newModule;
     }
 
