@@ -54,7 +54,7 @@ run(100);
 
 ## Documentation
 
-You can get started by following the tutorial provided with the documentation [here](./docs).
+You can get started by following the tutorial provided with the documentation [here](./docs/Readme.md).
 
 ## Credit
 
