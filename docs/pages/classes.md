@@ -28,7 +28,7 @@ Methods are the heart of OOP and can be added to objects in Dragon. Methods can 
 ```js
 class Test {
   testFunc() {
-    print('hello');
+    print("hello");
   }
 }
 ```
@@ -38,7 +38,7 @@ These methods can be called on an instance by accessing attributes of the instan
 ```js
 class Test {
   testFunc() {
-    print('hello');
+    print("hello");
   }
 }
 
@@ -93,7 +93,7 @@ The constructor function in Dragon is the method with the name `init`. The const
 ```js
 class Test {
   init() {
-    print('yes');
+    print("yes");
   }
 }
 
@@ -102,7 +102,7 @@ var test = Test(); // prints "yes"
 
 ## Inheritance
 
-In Dragon, classes can inherit the methods of their "super" class, potentially reducing code repetition. Classes can inherit other classes by declaring the keyword `extends` after the class name declaration and then the name of the class to inherit afterwards. 
+In Dragon, classes can inherit the methods of their "super" class, potentially reducing code repetition. Classes can inherit other classes by declaring the keyword `extends` after the class name declaration and then the name of the class to inherit afterwards.
 
 ```js
 class A {}
@@ -115,7 +115,7 @@ Classes inherit all the methods of their super class. When initiating a new func
 ```js
 class A {
   test() {
-    print('yes');
+    print("yes");
   }
 }
 
@@ -131,7 +131,7 @@ Inside a class' methods, the `super` keyword can be used to call any methods or 
 class A {
   printData(data) {
     print(data);
-  } 
+  }
 }
 
 class B extends A {
@@ -142,3 +142,5 @@ class B extends A {
 
 var a = B("hello");
 ```
+
+Next: [Imports](./imports.md)

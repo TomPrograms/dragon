@@ -11,4 +11,4 @@ module.exports.sleep = function(ms) {
   let now = new Date().getTime();
   while (new Date().getTime() < now + ms) {}
   return null;
-}
+};

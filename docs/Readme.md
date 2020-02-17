@@ -36,3 +36,6 @@ Dragon Language:
   - [Classes](./pages/classes.md)
     - [Creating Classes](./pages/classes.md#Creating-Classes)
     - [Inheritance](./pages/classes.md#Inheritance)
+  - [Module System](./pages/modules.md)
+    - [Importing](./pages/modules.md#Importing)
+    - [Exporting](./pages/modules.md#Exporting)
