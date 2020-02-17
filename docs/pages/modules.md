@@ -86,18 +86,18 @@ print(time.time());
 
 ### Current Standard Modules
 
-- Time
+- time
   - .time() - get epoch timestamp.
   - .localTime(epoch) - get timestamp formatted to computer's local area. Can be provided epoch time to format, else defaults to current epoch time.
   - .sleep(ms) - stop program running for specified amount of milliseconds.
-- OS
+- os
   - .read(path, encoding) - returns contents of file at path, using encoding with defaults to UTF-8.
   - .write(path, data, encoding) - writes data (defaults to "") to file at path with encoding (defaults to "UTF-8").
   - .delete(path) - deletes file at path.
   - .mkdir(path) - makes folder at path.
   - .deletedir(path) - deletes folder at path.
   - .listdir(path) - returns contents of folder at path in a list.
-- Math
+- math
   - .round(number) - rounds number to nearest integer.
   - .sqrt(number) - square roots number.
   - .floor(number) - rounds down number.
