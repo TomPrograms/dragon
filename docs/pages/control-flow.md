@@ -54,6 +54,8 @@ true or false; // true
 
 'a' in ['b']; // false
 'b' in ['b']; // true
+'c' in 'abc'; // true
+'key' in {'key': 'value'};
 ```
 
 ## If Elif Else Statements

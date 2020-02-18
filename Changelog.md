@@ -5,6 +5,7 @@
 - `time.sleep(ms)` command.
 - Exporting of single data types in place of the `exports` dictionary.
 - Bitwise Not (`~`) operator.
+- `in` keyword.
 
 # 1.1.0 - 16/02/2020
 

@@ -261,7 +261,15 @@ module.exports = class Interpreter {
     let left = this.evaluate(expr.left);
 
     if (expr.operator.type === tokenTypes.IN) {
-      return this.evaluate(expr.right).includes(left);
+      let right = this.evaluate(expr.right);
+
+      if (Array.isArray(right) || typeof right === "string") {
+        return this.evaluate(expr.right).includes(left);
+      } else if (right.constructor == Object) {
+        return left in right; 
+      } else {
+        throw new RuntimeError("Invalid type called with in keyword.")
+      }
     }
 
     if (expr.operator.type === tokenTypes.OR) {
