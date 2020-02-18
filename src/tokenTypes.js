@@ -12,6 +12,7 @@ module.exports = {
   BIT_AND: "BIT_AND",
   BIT_OR: "BIT_OR",
   BIT_XOR: "BIT_XOR",
+  BIT_NOT: "BIT_NOT",
   COLON: "COLON",
   SEMICOLON: "SEMICOLON",
   SLASH: "SLASH",

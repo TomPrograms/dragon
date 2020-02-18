@@ -68,6 +68,8 @@ module.exports = class Interpreter {
         return -right;
       case tokenTypes.BANG:
         return !this.isTruthy(right);
+      case tokenTypes.BIT_NOT:
+        return ~right;
     }
 
     return null;
