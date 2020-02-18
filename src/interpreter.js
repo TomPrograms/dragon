@@ -264,7 +264,7 @@ module.exports = class Interpreter {
       let right = this.evaluate(expr.right);
 
       if (Array.isArray(right) || typeof right === "string") {
-        return this.evaluate(expr.right).includes(left);
+        return right.includes(left);
       } else if (right.constructor == Object) {
         return left in right; 
       } else {
