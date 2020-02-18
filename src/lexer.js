@@ -2,6 +2,7 @@ const tokenTypes = require("./tokenTypes.js");
 
 const reservedWords = {
   and: tokenTypes.AND,
+  in: tokenTypes.IN,
   class: tokenTypes.CLASS,
   else: tokenTypes.ELSE,
   false: tokenTypes.FALSE,

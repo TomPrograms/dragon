@@ -321,12 +321,24 @@ module.exports = class Parser {
     return expr;
   }
 
-  and() {
+  in() {
     let expr = this.equality();
+
+    while (this.match(tokenTypes.IN)) {
+      let operator = this.previous();
+      let right = this.equality();
+      expr = new Expr.Logical(expr, operator, right);
+    }
+
+    return expr;
+  }
+
+  and() {
+    let expr = this.in();
 
     while (this.match(tokenTypes.AND)) {
       let operator = this.previous();
-      let right = this.equality();
+      let right = this.in();
       expr = new Expr.Logical(expr, operator, right);
     }
 

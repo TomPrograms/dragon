@@ -260,14 +260,16 @@ module.exports = class Interpreter {
   visitLogicalExpr(expr) {
     let left = this.evaluate(expr.left);
 
-    // if OR token
-    if (expr.operator.type == tokenTypes.OR) {
+    if (expr.operator.type === tokenTypes.IN) {
+      return this.evaluate(expr.right).includes(left);
+    }
+
+    if (expr.operator.type === tokenTypes.OR) {
       // if one statement true, must return true value
       if (this.isTruthy(left)) return left;
     }
 
-    // if AND token
-    else {
+    if (expr.operator.type === tokenTypes.AND) {
       // if one statement not true, must return false value
       if (!this.isTruthy(left)) return left;
     }
