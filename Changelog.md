@@ -1,3 +1,11 @@
+# 1.2.0 - XX/XX/XXXX
+
+### Added
+
+- `time.sleep(ms)` command.
+- Exporting of single data types in place of the `exports` dictionary.
+- Bitwise Not (`~`) operator.
+
 # 1.1.0 - 16/02/2020
 
 ### Added
