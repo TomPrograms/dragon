@@ -37,6 +37,25 @@ null // falsey
 false // falsey
 ```
 
+### Control Keywords
+
+Dragon includes various keywords that assist with control flow.
+
+- `and` - returns truthy is both values are true.
+- `or` - returns truthy if either value is true.
+- `in` - returns true if left value included in right value.
+
+```js
+true and true; // true
+true and false; // false
+
+false or false; // false
+true or false; // true
+
+'a' in ['b']; // false
+'b' in ['b']; // true
+```
+
 ## If Elif Else Statements
 
 Dragon provides if, elif and else statements for efficient control flow. Else and elif statements must be attached to a if statement and are optional. You may only provide one else statement. Each statement if followed by a body which is executed according the condition of the statement. The body of an if statement is executed if the condition is evaluated to be truthy, else any elif statements attached are evaluated in the order provided and if any of those conditions evaluated truthily their bodies are executed. Only one elif block can be executed. If the if statement isn't executed and no elif statements executed, if provided, the else block is executed.
