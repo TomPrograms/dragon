@@ -6,6 +6,6 @@ Enclosed is examples of programs in the Dragon programming language.
 
 Example Programs:
 
-- [Hello World!](./hello-world.drg)
-- [Fibonacci](./fibonacci.drg)
-- [Basic OOP with classes](./classes.drg)
+- [Hello World!](./programs/hello-world.drg)
+- [Fibonacci](./programs/fibonacci.drg)
+- [Basic OOP with classes](./programs/classes.drg)
