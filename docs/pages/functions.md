@@ -132,6 +132,22 @@ function main(a, *b) {
 main(1);
 ```
 
+### Default Parameters
+
+Default parameters can be declared for both standard and wildcard parameters and are used in place of `null` if that parameter would be equivalent to `null` due to the function call, else the parameter acts as normal. Default parameters can be declared by using an equals sign then a value (to be used as the default parameter) after the relevant parameter.
+
+```js
+function test(a='val1', b='val2', *c='val3') {
+  print(a);
+  print(b);
+  print(c);
+}
+
+test(); // prints "val1", "val2" and "val3"
+test("1"); // prints "1", "val2, and "val3"
+test('1', '2', '3', '4'); // prints "1", "2" and "[3, 4]"
+```
+
 ## Summary
 
 All this means we can write a program like the following, which utilises standard and anonymous functions with standard and wildcard parameters.
