@@ -1,0 +1,20 @@
+// examples of class based programming in Dragon
+
+// declaring a class
+class Test {
+  // class constructor
+  init(name) {
+    // save value to instance
+    this.name = name;
+  }
+
+  // print class' name
+  sayName() {
+    // access value from instance
+    print(this.name);
+  }
+}
+
+// create new instance
+var person = Test("Tom");
+person.sayName(); // prints "Tom"
