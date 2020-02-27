@@ -143,4 +143,4 @@ class B extends A {
 var a = B("hello");
 ```
 
-Next: [Imports](./imports.md)
+Next: [Modules](./modules.md)
