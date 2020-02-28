@@ -99,8 +99,8 @@ print(time.time());
   - .listdir(path) - returns contents of folder at path in a list.
 - math
   - .round(number) - rounds number to nearest integer.
-  - .sqrt(number) - square roots number.
   - .floor(number) - rounds down number.
+  - .sqrt(number) - square roots number.
   - .sin(num) - finds sin value of number.
   - .cos(num) - finds cos value of number.
   - .tan(num) - finds tan value of number.
