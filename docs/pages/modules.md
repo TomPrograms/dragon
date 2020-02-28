@@ -102,6 +102,7 @@ print(time.time());
   - .floor(number) - rounds down number.
   - .ceil(number) - rounds up number.
   - .sqrt(number) - square roots number.
+  - .root(num, root) - finds the specified root of the provided number.
   - .sin(num) - finds sin value of number.
   - .cos(num) - finds cos value of number.
   - .tan(num) - finds tan value of number.

@@ -40,6 +40,31 @@ module.exports.sqrt = function(num) {
   return Math.sqrt(num);
 };
 
+module.exports.root = function(num, root) {
+  if (isNaN(num) || num === null)
+    throw new RuntimeError(
+      this.token,
+      "Number provided to math.root(number, root) must be a number."
+    );
+
+  if (isNaN(root) || root === null)
+    throw new RuntimeError(
+      this.token,
+      "Root provided to math.root(number, root) must be a number."
+    );
+
+  let originalRoot = root;
+
+  let negateFlag = root % 2 == 1 && num < 0;
+  if (negateFlag) num = -num;
+  let possible = Math.pow(num, 1 / root);
+  root = Math.pow(possible, root);
+  if (Math.abs(num - root) < 1 && num > 0 == root > 0)
+    return negateFlag ? -possible : possible;
+
+  else throw new RuntimeError(this.token, `Unable to find the ${ originalRoot } root of ${ num }.`)
+};
+
 module.exports.sin = function(num) {
   if (isNaN(num) || num === null)
     throw new RuntimeError(
