@@ -87,25 +87,25 @@ print(time.time());
 ### Current Standard Modules
 
 - time
-  - .time() - get epoch timestamp.
-  - .localTime(epoch) - get timestamp formatted to computer's local area. Can be provided epoch time to format, else defaults to current epoch time.
-  - .sleep(ms) - stop program running for specified amount of milliseconds.
+  - `.time()` - get epoch timestamp.
+  - `.localTime(epoch)` - get timestamp formatted to computer's local area. Can be provided epoch time to format, else defaults to current epoch time.
+  - `.sleep(ms)` - stop program running for specified amount of milliseconds.
 - os
-  - .read(path, encoding) - returns contents of file at path, using encoding with defaults to UTF-8.
-  - .write(path, data, encoding) - writes data (defaults to "") to file at path with encoding (defaults to "UTF-8").
-  - .delete(path) - deletes file at path.
-  - .mkdir(path) - makes folder at path.
-  - .deletedir(path) - deletes folder at path.
-  - .listdir(path) - returns contents of folder at path in a list.
+  - `.read(path, encoding)` - returns contents of file at path, using encoding with defaults to UTF-8.
+  - `.write(path, data, encoding)` - writes data (defaults to "") to file at path with encoding (defaults to "UTF-8").
+  - `.delete(path)` - deletes file at path.
+  - `.mkdir(path)` - makes folder at path.
+  - `.deletedir(path)` - deletes folder at path.
+  - `.listdir(path)` - returns contents of folder at path in a list.
 - math
-  - .round(number) - rounds number to nearest integer.
-  - .floor(number) - rounds down number.
-  - .ceil(number) - rounds up number.
-  - .sqrt(number) - square roots number.
-  - .root(num, root) - finds the specified root of the provided number.
-  - .sin(num) - finds sin value of number.
-  - .cos(num) - finds cos value of number.
-  - .tan(num) - finds tan value of number.
-  - .radians(degrees) - converts degrees to radians.
-  - .degrees(radians) - converts radians to degrees.
-  - .pi - returns approximated value of Pi.
+  - `.round(num)` - rounds number to nearest integer.
+  - `.floor(num)` - rounds down number.
+  - `.ceil(num)` - rounds up number.
+  - `.sqrt(num)` - square roots number.
+  - `.root(num, root)` - finds the specified root of the provided number.
+  - `.sin(num)` - finds sin value of number.
+  - `.cos(num)` - finds cos value of number.
+  - `.tan(num)` - finds tan value of number.
+  - `.radians(degrees)` - converts degrees to radians.
+  - `.degrees(radians)` - converts radians to degrees.
+  - `.pi` - returns approximated value of Pi.
