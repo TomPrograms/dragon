@@ -266,9 +266,9 @@ module.exports = class Interpreter {
       if (Array.isArray(right) || typeof right === "string") {
         return right.includes(left);
       } else if (right.constructor == Object) {
-        return left in right; 
+        return left in right;
       } else {
-        throw new RuntimeError("Invalid type called with in keyword.")
+        throw new RuntimeError("Invalid type called with in keyword.");
       }
     }
 
