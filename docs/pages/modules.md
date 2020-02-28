@@ -106,4 +106,4 @@ print(time.time());
   - .tan(num) - finds tan value of number.
   - .radians(degrees) - converts degrees to radians.
   - .degrees(radians) - converts radians to degrees.
-  - .Pi - returns approximated value of Pi.
+  - .pi - returns approximated value of Pi.
