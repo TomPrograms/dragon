@@ -80,4 +80,4 @@ module.exports.degrees = function(angle) {
   return angle * (180 / Math.PI);
 };
 
-module.exports.Pi = Math.PI;
+module.exports.pi = Math.PI;
