@@ -100,6 +100,7 @@ print(time.time());
 - math
   - .round(number) - rounds number to nearest integer.
   - .floor(number) - rounds down number.
+  - .ceil(number) - rounds up number.
   - .sqrt(number) - square roots number.
   - .sin(num) - finds sin value of number.
   - .cos(num) - finds cos value of number.

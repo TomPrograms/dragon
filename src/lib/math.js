@@ -20,6 +20,16 @@ module.exports.floor = function(num) {
   return Math.floor(num);
 };
 
+module.exports.ceil = function(num) {
+  if (isNaN(num) || num === null)
+    throw new RuntimeError(
+      this.token,
+      "You must provide a number to math.ceil(number)."
+    );
+
+  return Math.ceil(num);
+};
+
 module.exports.sqrt = function(num) {
   if (isNaN(num) || num === null)
     throw new RuntimeError(
