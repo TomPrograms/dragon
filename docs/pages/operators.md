@@ -19,6 +19,7 @@ The majority of operators seen in programming languages are also seen within Dra
 - `<` - Lesser than.
 - `==` - Equals to.
 - `!=` - Not equals to.
+- `in` - In.
 - `and` - And.
 - `or` - Or.
 
@@ -34,6 +35,6 @@ Operators have a clear order of precedence, similair to mathematics where operat
 - `|` and `^`
 - `>` and `<`
 - `==` and `!=`
-- `and` and `or`
+- `in`, `and` and `or`
 
 Next: [Control Flow](./control-flow.md)
