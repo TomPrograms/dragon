@@ -452,8 +452,12 @@ module.exports = class Interpreter {
     let data = checkStdLib(relativePath);
     if (data !== null) return data;
 
-    if (!fs.existsSync(totalPath)) {
-      throw new RuntimeError(stmt.closeBracket, "Couldn't find imported file.");
+    try {
+      if (!fs.existsSync(totalPath)) {
+        throw new RuntimeError(stmt.closeBracket, "Couldn't find imported file.");
+      }
+    } catch(error) {
+      throw new RuntimeError(stmt.closeBracket, "Couldn't load file.");
     }
 
     data = fs.readFileSync(totalPath).toString();
