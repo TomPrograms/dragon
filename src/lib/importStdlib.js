@@ -19,6 +19,11 @@ const loadModule = function(moduleName, modulePath) {
   return newModule;
 };
 
+// require all standard library modules, so they are included with browserify
+require("./time.js");
+require("./math.js");
+require("./os.js");
+
 module.exports = function(name) {
   switch (name) {
     case "os":
