@@ -61,8 +61,11 @@ module.exports.root = function(num, root) {
   root = Math.pow(possible, root);
   if (Math.abs(num - root) < 1 && num > 0 == root > 0)
     return negateFlag ? -possible : possible;
-
-  else throw new RuntimeError(this.token, `Unable to find the ${ originalRoot } root of ${ num }.`)
+  else
+    throw new RuntimeError(
+      this.token,
+      `Unable to find the ${originalRoot} root of ${num}.`
+    );
 };
 
 module.exports.sin = function(num) {
