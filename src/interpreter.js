@@ -454,9 +454,12 @@ module.exports = class Interpreter {
 
     try {
       if (!fs.existsSync(totalPath)) {
-        throw new RuntimeError(stmt.closeBracket, "Couldn't find imported file.");
+        throw new RuntimeError(
+          stmt.closeBracket,
+          "Couldn't find imported file."
+        );
       }
-    } catch(error) {
+    } catch (error) {
       throw new RuntimeError(stmt.closeBracket, "Couldn't load file.");
     }
 

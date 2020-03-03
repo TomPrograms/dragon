@@ -3,7 +3,11 @@
   "version": "1.2.0",
   "description": "Object orientated, dynamically typed, interpreted programming language inspired by Python and Javascript.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "browserify src/web.js --s Dragon > bundle.js",
+    "build-min": "browserify src/web.js -p tinyify --s Dragon > dist.js",
+    "prepublishOnly": "npm run build-min"
+  },
   "repository": "TomPrograms/dragon",
   "bin": {
     "dragon": "./bin/dragon"
@@ -19,9 +23,14 @@
     "Readme.md",
     "index.js",
     "bin/",
-    "src/"
+    "src/",
+    "dist.js"
   ],
   "author": "Tom",
   "license": "MIT",
-  "homepage": "https://github.com/tomprograms/dragon#readme"
+  "homepage": "https://github.com/tomprograms/dragon#readme",
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "tinyify": "^2.5.2"
+  }
 }
