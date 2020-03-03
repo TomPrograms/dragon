@@ -7,7 +7,7 @@
 - `math.ceil()` function.
 
 ### Changed
- 
+
 - Renamed `math.Pi` to `math.pi`.
 - Added `try` `catch` to attempting to check existence of file to load with `import()`, improving browser compatibility.
 

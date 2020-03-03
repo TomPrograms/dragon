@@ -50,7 +50,7 @@ html {
   position: fixed;
   border-right: 2px solid grey;
   border-top: 2px solid grey;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 
 .output {

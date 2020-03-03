@@ -37,7 +37,7 @@ const functions = `function main(func) {
 // outputs [1, 2, 3]
 main(function(*args) {
   print(args);
-});`
+});`;
 
 const demos = {
   fibonacci,
