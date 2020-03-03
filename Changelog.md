@@ -1,3 +1,16 @@
+# 1.3.0 - 03/03/2020
+
+### Added
+
+- `dist.js` for usage in the browser.
+- `math.root()` function.
+- `math.ceil()` function.
+
+### Changed
+ 
+- Renamed `math.Pi` to `math.pi`.
+- Added `try` `catch` to attempting to check existence of file to load with `import()`, improving browser compatibility.
+
 # 1.2.0 - 19/02/2020
 
 ### Added
