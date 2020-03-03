@@ -52,9 +52,10 @@ run(100);
 - 🧠 Great control flow - if and else, for and while, switch and case all included.
 - 🤖 Turing Complete - all features needed to build a complete turing machine.
 
-## Documentation
+## Getting Started
 
-You can get started by following the tutorial provided with the documentation [here](./docs/Readme.md).
+- [Documentation](./docs/Readme.md) - You can get started by following the tutorial provided with the documentation.
+- [Dragon Online](https://tomprograms.github.io/dragon) - You can run Dragon code online, allowing you to get started even faster.
 
 ## Credit
 
