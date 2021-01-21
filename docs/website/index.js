@@ -9,14 +9,7 @@ String.prototype.capitalize = function() {
 };
 
 function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    if (decodeURIComponent(pair[0]) == variable) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
+  return new URLSearchParams(window.location.search).get(variable);
 }
 
 // output handling
@@ -54,7 +47,7 @@ demoKeys.forEach(demo => {
 });
 
 let queryCode = getQueryVariable("code");
-if (queryCode !== undefined) {
+if (queryCode !== null) {
   editor.updateCode(decodeURI(queryCode));
   demoSelector.value = "custom";
 } else {
